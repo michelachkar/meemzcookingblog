@@ -1,0 +1,28 @@
+# OS-specific files
+.DS_Store  # macOS
+Thumbs.db  # Windows
+
+# Compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.swp  # Vim swap files
+
+# Environment variables (secrets)
+.env
+.env.local
+.env.development
+.env.production
+
+# Database files
+*.sqlite3
+db.sqlite3
+
+# Django migrations cache
+*/migrations/*.pyc
+*/migrations/__pycache__/
+*/migrations/*_old.py
+
+# VS Code settings
+.vscode/

@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    My Blog
+{% endblock %}
+
+{% block content %}
+    
+
+<!-- ========================
+       page title 
+    =========================== -->
+    <section id="page-title" class="page-title page-title-layout5 text-center bg-overlay bg-overlay-2 bg-parallax">
+        <div class="bg-img"><img src="{% static 'portfolio/images//backgrounds/8.jpg' %}" alt="background"></div>
+        <svg class="pagetitle__divider-shape" xmlns="http://www.w3.org/2000/svg" width="22" height="61"
+          viewBox="0 0 22 61">
+          <path
+            d="M799,769h2v61h-2V769Zm8,24.8a0.969,0.969,0,0,0-1.911,0,3.012,3.012,0,0,1-.883,2.16,4.486,4.486,0,0,0,0,6.136,3.083,3.083,0,0,1,0,4.32,4.486,4.486,0,0,0,0,6.136,3.088,3.088,0,0,1,0,4.325,4.5,4.5,0,0,0,0,6.142,3.014,3.014,0,0,1,.884,2.163,0.969,0.969,0,0,0,1.911,0,4.414,4.414,0,0,0-1.213-3.07,3.091,3.091,0,0,1,0-4.328,4.491,4.491,0,0,0,0-6.14,3.08,3.08,0,0,1,0-4.319,4.488,4.488,0,0,0,0-6.137,3.081,3.081,0,0,1,0-4.32A4.407,4.407,0,0,0,807,793.8Zm0-20a0.969,0.969,0,0,0-1.911,0,3.014,3.014,0,0,1-.883,2.16,4.486,4.486,0,0,0,0,6.136,3.083,3.083,0,0,1,0,4.32,4.488,4.488,0,0,0,0,6.137,3.087,3.087,0,0,1,0,4.324,4.5,4.5,0,0,0,0,6.142,3.014,3.014,0,0,1,.884,2.163,0.969,0.969,0,0,0,1.911,0,4.414,4.414,0,0,0-1.213-3.07,3.089,3.089,0,0,1,0-4.327,4.491,4.491,0,0,0,0-6.14,3.081,3.081,0,0,1,0-4.32,4.488,4.488,0,0,0,0-6.137,3.081,3.081,0,0,1,0-4.32A4.409,4.409,0,0,0,807,773.8ZM793,793.8a0.969,0.969,0,0,1,1.911,0,3.012,3.012,0,0,0,.883,2.16,4.486,4.486,0,0,1,0,6.136,3.083,3.083,0,0,0,0,4.32,4.486,4.486,0,0,1,0,6.136,3.088,3.088,0,0,0,0,4.325,4.5,4.5,0,0,1,0,6.142,3.014,3.014,0,0,0-.884,2.163,0.969,0.969,0,0,1-1.911,0,4.414,4.414,0,0,1,1.213-3.07,3.091,3.091,0,0,0,0-4.328,4.491,4.491,0,0,1,0-6.14,3.08,3.08,0,0,0,0-4.319,4.488,4.488,0,0,1,0-6.137,3.081,3.081,0,0,0,0-4.32A4.407,4.407,0,0,1,793,793.8Zm0-20a0.969,0.969,0,0,1,1.911,0,3.014,3.014,0,0,0,.883,2.16,4.486,4.486,0,0,1,0,6.136,3.083,3.083,0,0,0,0,4.32,4.488,4.488,0,0,1,0,6.137,3.087,3.087,0,0,0,0,4.324,4.5,4.5,0,0,1,0,6.142,3.014,3.014,0,0,0-.884,2.163,0.969,0.969,0,0,1-1.911,0,4.414,4.414,0,0,1,1.213-3.07,3.089,3.089,0,0,0,0-4.327,4.491,4.491,0,0,1,0-6.14,3.081,3.081,0,0,0,0-4.32,4.488,4.488,0,0,1,0-6.137,3.081,3.081,0,0,0,0-4.32A4.409,4.409,0,0,1,793,773.8Zm-4,5.2h2v41h-2V779Zm20,0h2v41h-2V779Z"
+            transform="translate(-789 -769)"></path>
+        </svg>
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+              <span class="pagetitle__subheading">Les recettes</span>
+              <h1 class="pagetitle__heading">{{dish_type.name}}</h1>
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb justify-content-center">
+                  <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                  <li class="breadcrumb-item"><a href="blog-grid.html">Recettes</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">{{dish_type.name}}</li>
+                </ol>
+              </nav>
+            </div><!-- /.col-lg-12 -->
+          </div><!-- /.row -->
+        </div><!-- /.container -->
+      </section><!-- /.page-title -->
+  
+  
+      <!-- ======================
+        Blog Grid
+      ========================= -->
+      <section id="blogGrid" class="blog blog-grid pb-60">
+        <div class="container">
+          <div class="row">
+            <!-- Post Item #1 -->
+            <div class="col-sm-12 col-md-6 col-lg-4">
+              <div class="post-item">
+                <div class="post__img">
+                  <a href="#">
+                    <img src="{% static 'portfolio/images/blog/grid/1.jpg' %}" alt="post image">
+                  </a>
+                </div><!-- /.post__img -->
+                <div class="post__content">
+                  <div class="post__meta">
+                    <span class="post__meta-date">Jan 20, 2020</span>
+                    <div class="post__meta-cat">
+                      <a href="#">Business</a><a href="#">Tips</a>
+                    </div><!-- /.post-meta-cat -->
+                  </div><!-- /.post-meta -->
+                  <h4 class="post__title"><a href="#">Simple Recipes for Spring</a></h4>
+                  <p class="post__desc">My favorite form of cold-weather exercise is snow-shoeing, but by chance I haven’t
+                    been able to go this year. Busy working at the computer when fresh snow fell...</p>
+                  <a href="#" class="btn btn__secondary btn__link">Read More</a>
+                </div><!-- /.post__content -->
+              </div><!-- /.post-item -->
+            </div><!-- /.col-lg-4 -->
+            <!-- Post Item #2 -->
+            <div class="col-sm-12 col-md-6 col-lg-4">
+              <div class="post-item">
+                <div class="post__img">
+                  <a href="#">
+                    <img src="{% static 'portfolio/images/blog/grid/2.jpg' %}" alt="post image">
+                  </a>
+                </div><!-- /.post__img -->
+                <div class="post__content">
+                  <div class="post__meta">
+                    <span class="post__meta-date">Oct 18, 2020</span>
+                    <div class="post__meta-cat">
+                      <a href="#">Chef</a><a href="#">Dinner</a>
+                    </div><!-- /.post-meta-cat -->
+                  </div><!-- /.post-meta -->
+                  <h4 class="post__title"><a href="#">Dinner Partty for a Chef!</a></h4>
+                  <p class="post__desc">I began my career as a recipe tester for cookbooks, and I did that work for years.
+                    We loved cookbooks and loved browsing for them at thrift stores...</p>
+                  <a href="#" class="btn btn__secondary btn__link">Read More</a>
+                </div><!-- /.post__content -->
+              </div><!-- /.post-item -->
+            </div><!-- /.col-lg-4 -->
+            <!-- Post Item #3 -->
+            <div class="col-sm-12 col-md-6 col-lg-4">
+              <div class="post-item">
+                <div class="post__img">
+                  <a href="#">
+                    <img src="{% static 'portfolio/images/blog/grid/3.jpg' %}" alt="post image">
+                  </a>
+                </div><!-- /.post__img -->
+                <div class="post__content">
+                  <div class="post__meta">
+                    <span class="post__meta-date">Jan 20, 2020</span>
+                    <div class="post__meta-cat">
+                      <a href="#">Food</a><a href="#">Cheese</a>
+                    </div><!-- /.post-meta-cat -->
+                  </div><!-- /.post-meta -->
+                  <h4 class="post__title"><a href="#">Cake with Cream Cheese</a></h4>
+                  <p class="post__desc">I’ve been baking this cake for many years, and have experimented with making it
+                    into cupcakes, as a layer cake, serving it dusted with confectioner’s sugar...</p>
+                  <a href="#" class="btn btn__secondary btn__link">Read More</a>
+                </div><!-- /.post__content -->
+              </div><!-- /.post-item -->
+            </div><!-- /.col-lg-4 -->
+            <!-- Post Item #4 -->
+            <div class="col-sm-12 col-md-6 col-lg-4">
+              <div class="post-item">
+                <div class="post__img">
+                  <a href="#">
+                    <img src="{% static 'portfolio/images/blog/grid/4.jpg' %}" alt="post image">
+                  </a>
+                </div><!-- /.post__img -->
+                <div class="post__content">
+                  <div class="post__meta">
+                    <span class="post__meta-date">Oct 24, 2020</span>
+                    <div class="post__meta-cat">
+                      <a href="#">Pork</a><a href="#">Belly</a>
+                    </div><!-- /.post-meta-cat -->
+                  </div><!-- /.post-meta -->
+                  <h4 class="post__title"><a href="#">Braised Pork Belly Adobo</a></h4>
+                  <p class="post__desc">UX Designer is still a relatively profession, and one that is still being defined.
+                    Emilia suggests it is an often...</p>
+                  <a href="#" class="btn btn__secondary btn__link">Read More</a>
+                </div><!-- /.post__content -->
+              </div><!-- /.post-item -->
+            </div><!-- /.col-lg-4 -->
+            <!-- Post Item #5 -->
+            <div class="col-sm-12 col-md-6 col-lg-4">
+              <div class="post-item">
+                <div class="post__img">
+                  <a href="#">
+                    <img src="{% static 'portfolio/images/blog/grid/5.jpg' %}" alt="post image">
+                  </a>
+                </div><!-- /.post__img -->
+                <div class="post__content">
+                  <div class="post__meta">
+                    <span class="post__meta-date">Oct 27, 2020</span>
+                    <div class="post__meta-cat">
+                      <a href="#">Apple</a><a href="#">Pie</a>
+                    </div><!-- /.post-meta-cat -->
+                  </div><!-- /.post-meta -->
+                  <h4 class="post__title"><a href="#">Tiny Apple Pies Cinnamon</a></h4>
+                  <p class="post__desc">I began my career as a recipe tester for cookbooks, and I did that work for years.
+                    We loved cookbooks and loved browsing for them at thrift stores...</p>
+                  <a href="#" class="btn btn__secondary btn__link">Read More</a>
+                </div><!-- /.post__content -->
+              </div><!-- /.post-item -->
+            </div><!-- /.col-lg-4 -->
+            <!-- Post Item #6 -->
+            <div class="col-sm-12 col-md-6 col-lg-4">
+              <div class="post-item">
+                <div class="post__img">
+                  <a href="#">
+                    <img src="{% static 'portfolio/images/blog/grid/6.jpg' %}" alt="post image">
+                  </a>
+                </div><!-- /.post__img -->
+                <div class="post__content">
+                  <div class="post__meta">
+                    <span class="post__meta-date">Oct 24, 2020</span>
+                    <div class="post__meta-cat">
+                      <a href="#">Breakfast</a>
+                    </div><!-- /.post-meta-cat -->
+                  </div><!-- /.post-meta -->
+                  <h4 class="post__title"><a href="#">Meal Prep Breakfast Week </a></h4>
+                  <p class="post__desc">I’ve been baking this cake for many years, and have experimented with making it
+                    into cupcakes, as a layer cake, serving it dusted with confectioner’s sugar...</p>
+                  <a href="#" class="btn btn__secondary btn__link">Read More</a>
+                </div><!-- /.post__content -->
+              </div><!-- /.post-item -->
+            </div><!-- /.col-lg-4 -->
+          </div><!-- /.row -->
+          <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+              <nav class="pagination-area">
+                <ul class="pagination justify-content-center">
+                  <li><a class="current" href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+                </ul>
+              </nav><!-- .pagination-area -->
+            </div><!-- /.col-lg-12 -->
+          </div><!-- /.row -->
+        </div><!-- /.container -->
+      </section><!-- /.blog Grid -->
+
+{% endblock %}

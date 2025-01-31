@@ -1,0 +1,22 @@
+{% load static %}
+
+{% for recipe in recipes %}
+<div class="post-item">
+    <div class="post__img">
+        <a href="{% url 'recipe_detail' recipe.slug %}">
+            <img src="https://{{ AWS_S3_CUSTOM_DOMAIN }}/{{ recipe.image}}" alt="{{ recipe.title }}">
+        </a>
+    </div><!-- /.post__img -->
+    <div class="post__content">
+        <div class="post__meta">
+            <span class="post__meta-date">{{ recipe.date }}</span>
+            <div class="post__meta-cat">
+                <a href="{% url 'recipes-dish-type' recipe.dish_type.slug %}">{{ recipe.dish_type }}</a>
+            </div><!-- /.post-meta-cat -->
+        </div><!-- /.post-meta -->
+        <h4 class="post__title"><a href="{% url 'recipe_detail' recipe.slug %}">{{recipe.title}}</a></h4>
+        <p class="post__desc">{{recipe.excerpt}}.</p>
+        <a href="{% url 'recipe_detail' recipe.slug %}" class="btn btn__secondary btn__link">Voir plus</a>
+    </div><!-- /.post__content -->
+</div><!-- /.post-item -->
+{% endfor %} 
