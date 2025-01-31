@@ -3,6 +3,7 @@ from django.http import Http404, HttpResponseServerError
 from datetime import date
 from portfolio.models.recipe import Recipe
 from portfolio.models.gallery_image import GalleryImage
+from portfolio.models.slide import Slide
 from portfolio.models.dish_type import DishType
 from django.db import DatabaseError
 from django.core.exceptions import ObjectDoesNotExist
@@ -21,6 +22,9 @@ def home(request):
             all_recipes.append((dish_type,filtered_recipes))
 
         #Getting Gallery Images
+        slides = Slide.objects.all()
+
+        #Getting Slides
         gallery_images = GalleryImage.objects.all()[:8]
             
         #Getting content context
@@ -41,7 +45,7 @@ def home(request):
             }
         }
 
-        return render(request, 'portfolio/home.html', {'all_recipes': all_recipes, 'gallery_images':gallery_images, 'context': context})
+        return render(request, 'portfolio/home.html', {'all_recipes': all_recipes, 'gallery_images':gallery_images, 'slides':slides, 'context': context})
     except DatabaseError as e:
         return HttpResponseServerError(f"Database error: {str(e)}")
     except Exception as e:
@@ -50,9 +54,13 @@ def home(request):
 
 # Displays all recipes
 def recipes(request):
+
+    # Getting dish Types
+    dish_types = DishType.objects.all()
+
     try:
         all_recipes = Recipe.objects.all().order_by('-date')
-        return render(request, "./portfolio/recipes.html", {"recipes": all_recipes})
+        return render(request, "./portfolio/recipes.html", {"dish_types": dish_types})
     except DatabaseError as e:
         return HttpResponseServerError(f"Database error: {str(e)}")
     except Exception as e:

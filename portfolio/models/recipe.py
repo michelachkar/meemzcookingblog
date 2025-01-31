@@ -35,6 +35,7 @@ class Recipe(models.Model):
     )
 
     image = models.ImageField(
+        upload_to="recipe",
         storage=S3Boto3Storage(),
         verbose_name="Recipe Image",
         help_text="Upload an image for this recipe.",

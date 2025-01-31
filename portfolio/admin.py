@@ -6,6 +6,7 @@ from portfolio.models.event_type import EventType
 from portfolio.models.main_ingredient import MainIngredient
 from portfolio.models.recipe import Recipe
 from portfolio.models.gallery_image import GalleryImage
+from portfolio.models.slide import Slide
 from portfolio.models.tag import Tag
 from portfolio.models.recipe_image import RecipeImage
 from django_ckeditor_5.widgets import CKEditor5Widget
@@ -38,3 +39,4 @@ admin.site.register(EventType)
 admin.site.register(MainIngredient)
 admin.site.register(Tag)
 admin.site.register(GalleryImage)
+admin.site.register(Slide)

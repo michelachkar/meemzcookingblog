@@ -12,6 +12,7 @@ class GalleryImage(models.Model):
     )
 
     image = models.ImageField(
+        upload_to="gallery",
         storage=S3Boto3Storage(),
         verbose_name="Gallery Image",
         help_text="Upload additional images for the gallery."
