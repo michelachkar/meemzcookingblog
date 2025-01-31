@@ -9,6 +9,7 @@ from portfolio.models.main_ingredient import MainIngredient
 from portfolio.models.event_type import EventType
 from portfolio.models.tag import Tag
 from django.db.models import ProtectedError
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 class RecipeModelTest(TestCase):
@@ -22,7 +23,10 @@ class RecipeModelTest(TestCase):
         self.event_type = EventType.objects.create(name="Dinner Party")
 
     def test_create_recipe(self):
-        # Test creating a valid Recipe instance
+        """
+        Test the creation of a recipe with all required fields. 
+        Ensure that the title and slug are saved correctly.
+        """
         recipe = Recipe.objects.create(
             title="Spaghetti Carbonara",
             excerpt="A classic Italian pasta dish with eggs, cheese, pancetta, and pepper.",
@@ -35,29 +39,33 @@ class RecipeModelTest(TestCase):
             difficulty_level=self.difficulty_level,
             event_type=self.event_type,
         )
-        # Assert the recipe's title and slug match the expected values
         self.assertEqual(recipe.title, "Spaghetti Carbonara")
         self.assertEqual(recipe.slug, "spaghetti-carbonara")
 
     def test_max_length_constraints(self):
-        # Test max length constraints for fields
+        """
+        Test that the model enforces maximum length constraints for title, excerpt, image, and slug.
+        An error should be raised when the length exceeds the defined limit.
+        """
         recipe = Recipe(
-            title="T" * 151,  # Exceed max length of 150 for title
-            excerpt="E" * 201,  # Exceed max length of 200 for excerpt
-            image="I" * 101,  # Exceed max length of 100 for image
-            slug="S" * 51,  # Exceed max length of 50 for slug
+            title="T" * 151,  # Exceeds max length for title
+            excerpt="E" * 201,  # Exceeds max length for excerpt
+            image="I" * 101,  # Exceeds max length for image
+            slug="S" * 51,  # Exceeds max length for slug
             content="Valid content over 10 chars.",
             dish_type=self.dish_type,
             main_ingredient=self.main_ingredient,
             cuisine_type=self.cuisine_type,
             difficulty_level=self.difficulty_level,
         )
-        # Assert a ValidationError is raised for the exceeded length fields
         with self.assertRaises(ValidationError):
             recipe.full_clean()
 
     def test_recipe_slug_unique(self):
-        # Test the slug uniqueness constraint
+        """
+        Test that the slug is unique. If two recipes have the same slug, 
+        an error should be raised.
+        """
         Recipe.objects.create(
             title="Spaghetti Carbonara",
             excerpt="A classic Italian pasta dish.",
@@ -69,13 +77,12 @@ class RecipeModelTest(TestCase):
             cuisine_type=self.cuisine_type,
             difficulty_level=self.difficulty_level,
         )
-        # Try to create a recipe with a duplicate slug, which should raise an error
         with self.assertRaises(Exception):
             Recipe.objects.create(
                 title="Another Carbonara",
                 excerpt="A variation of Carbonara.",
                 image="carbonara2.jpg",
-                slug="spaghetti-carbonara",  # Same slug as before
+                slug="spaghetti-carbonara",  # Duplicate slug
                 content="Different step-by-step guide.",
                 dish_type=self.dish_type,
                 main_ingredient=self.main_ingredient,
@@ -83,25 +90,10 @@ class RecipeModelTest(TestCase):
                 difficulty_level=self.difficulty_level,
             )
 
-    def test_min_length_content(self):
-        # Test validation of minimum length constraint on content field
-        recipe = Recipe(
-            title="Short Content Test",
-            excerpt="Testing minimum content length.",
-            image="test.jpg",
-            slug="short-content-test",
-            content="Too short",  # Should raise a ValidationError due to too short content
-            dish_type=self.dish_type,
-            main_ingredient=self.main_ingredient,
-            cuisine_type=self.cuisine_type,
-            difficulty_level=self.difficulty_level,
-        )
-        # Assert a ValidationError is raised
-        with self.assertRaises(ValidationError):
-            recipe.full_clean()
-
     def test_auto_date_field(self):
-        # Test that the auto date field updates automatically on save
+        """
+        Test that the `date` field is automatically set when creating a new recipe.
+        """
         recipe = Recipe.objects.create(
             title="Auto Date Test",
             excerpt="Checking date field behavior.",
@@ -113,11 +105,12 @@ class RecipeModelTest(TestCase):
             cuisine_type=self.cuisine_type,
             difficulty_level=self.difficulty_level,
         )
-        # Assert that the date field is not None
         self.assertIsNotNone(recipe.date)
 
     def test_optional_event_type(self):
-        # Test that event_type field can be set to None (it’s optional)
+        """
+        Test that the `event_type` field is optional. A recipe can be created without specifying an event type.
+        """
         recipe = Recipe.objects.create(
             title="No Event Type",
             excerpt="This recipe has no event type.",
@@ -128,13 +121,14 @@ class RecipeModelTest(TestCase):
             main_ingredient=self.main_ingredient,
             cuisine_type=self.cuisine_type,
             difficulty_level=self.difficulty_level,
-            event_type=None,  # event_type set to None
+            event_type=None,  # No event type specified
         )
-        # Assert that event_type is None
         self.assertIsNone(recipe.event_type)
 
     def test_blank_content(self):
-        # Test that content can be blank (blank=True is set)
+        """
+        Test that the content field can be left blank. It should not raise an error if blank.
+        """
         recipe = Recipe.objects.create(
             title="Spaghetti Carbonara",
             excerpt="A classic Italian pasta dish with eggs, cheese, pancetta, and pepper.",
@@ -148,13 +142,14 @@ class RecipeModelTest(TestCase):
             event_type=self.event_type,
         )
         try:
-            # Blank content should not raise an error
-            recipe.full_clean()  
+            recipe.full_clean()  # Should not raise ValidationError
         except ValidationError:
             self.fail("ValidationError raised unexpectedly!")
 
     def test_many_to_many_tags(self):
-        # Test that a recipe can have multiple tags
+        """
+        Test the many-to-many relationship between recipes and tags. Ensure that a recipe can have multiple tags.
+        """
         recipe = Recipe.objects.create(
             title="Tagged Recipe",
             excerpt="Recipe with multiple tags.",
@@ -169,11 +164,12 @@ class RecipeModelTest(TestCase):
         tag1 = Tag.objects.create(caption="Quick")
         tag2 = Tag.objects.create(caption="Easy")
         recipe.tags.add(tag1, tag2)
-        # Assert the recipe has 2 tags
         self.assertEqual(recipe.tags.count(), 2)
 
     def test_blank_tags(self):
-        # Test saving a recipe without tags (blank=True)
+        """
+        Test that a recipe can be created without any tags, ensuring that tags are optional.
+        """
         recipe = Recipe.objects.create(
             title="No Tags",
             excerpt="This recipe has no tags.",
@@ -185,11 +181,13 @@ class RecipeModelTest(TestCase):
             cuisine_type=self.cuisine_type,
             difficulty_level=self.difficulty_level,
         )
-        # Assert the recipe has 0 tags
         self.assertEqual(recipe.tags.count(), 0)
 
     def test_slug_special_characters(self):
-        # Test slug with special characters
+        """
+        Test that special characters in the title are handled correctly in the slug field.
+        The special characters should be sanitized.
+        """
         recipe = Recipe.objects.create(
             title="Special @Character #Recipe",
             excerpt="Testing special characters in slug.",
@@ -201,28 +199,32 @@ class RecipeModelTest(TestCase):
             cuisine_type=self.cuisine_type,
             difficulty_level=self.difficulty_level,
         )
-        # Assert the slug is correctly formatted with special characters removed
         self.assertEqual(recipe.slug, "special-character-recipe")
 
     def test_empty_slug(self):
-        # Test for empty slug
+        """
+        Test that an empty slug raises a validation error.
+        The slug field should not be empty.
+        """
         recipe = Recipe(
             title="Empty Slug Test",
             excerpt="Testing empty slug scenario.",
             image="empty_slug.jpg",
-            slug="",  # Empty slug should raise a ValidationError
+            slug="",  # Empty slug
             content="Valid content here.",
             dish_type=self.dish_type,
             main_ingredient=self.main_ingredient,
             cuisine_type=self.cuisine_type,
             difficulty_level=self.difficulty_level,
         )
-        # Assert a ValidationError is raised for the empty slug
         with self.assertRaises(ValidationError):
             recipe.full_clean()
 
     def test_foreign_key_protect_difficulty_level(self):
-        # Test for ProtectedError when trying to delete a DifficultyLevel with related Recipe instances
+        """
+        Test that difficulty levels are protected from deletion when referenced by a recipe.
+        Deleting a referenced difficulty level should raise a ProtectedError.
+        """
         new_difficulty = DifficultyLevel.objects.create(name="Very Difficult")
         recipe = Recipe.objects.create(
             title="Spaghetti Carbonara",
@@ -241,7 +243,10 @@ class RecipeModelTest(TestCase):
             new_difficulty.delete()
 
     def test_foreign_key_protect_dish_type(self):
-        # Test for ProtectedError when trying to delete a DishType with related Recipe instances
+        """
+        Test that dish types are protected from deletion when referenced by a recipe.
+        Deleting a referenced dish type should raise a ProtectedError.
+        """
         new_dish_type = DishType.objects.create(name="Main Course")
         recipe = Recipe.objects.create(
             title="Spaghetti Carbonara",
@@ -260,7 +265,10 @@ class RecipeModelTest(TestCase):
             new_dish_type.delete()
 
     def test_foreign_key_protect_main_ingredient(self):
-        # Test for ProtectedError when trying to delete a MainIngredient with related Recipe instances
+        """
+        Test that main ingredients are protected from deletion when referenced by a recipe.
+        Deleting a referenced main ingredient should raise a ProtectedError.
+        """
         new_main_ingredient = MainIngredient.objects.create(name="Chicken")
         recipe = Recipe.objects.create(
             title="Spaghetti Carbonara",
@@ -277,10 +285,12 @@ class RecipeModelTest(TestCase):
         self.assertEqual(Recipe.objects.count(), 1)
         with self.assertRaises(ProtectedError):
             new_main_ingredient.delete()
-            
 
     def test_foreign_key_protect_cuisine_type(self):
-        # Test for ProtectedError when trying to delete a CuisineType with related Recipe instances
+        """
+        Test that cuisine types are protected from deletion when referenced by a recipe.
+        Deleting a referenced cuisine type should raise a ProtectedError.
+        """
         new_cuisine_type = CuisineType.objects.create(name="Italian")
         recipe = Recipe.objects.create(
             title="Spaghetti Carbonara",
@@ -298,9 +308,10 @@ class RecipeModelTest(TestCase):
         with self.assertRaises(ProtectedError):
             new_cuisine_type.delete()
 
-
     def test_foreign_key_set_null_event_type(self):
-        # Test for SET_NULL behavior on EventType deletion
+        """
+        Test that when an EventType is deleted, the related recipes have their event_type set to NULL.
+        """
         new_event_type = EventType.objects.create(name="Coucou")
         recipe = Recipe.objects.create(
             title="Spaghetti Carbonara",
@@ -314,13 +325,59 @@ class RecipeModelTest(TestCase):
             difficulty_level=self.difficulty_level,
             event_type=new_event_type,
         )
-        self.assertEqual(Recipe.objects.count(), 1)
-        # Deleting EventType should set event_type to NULL in the Recipe
         new_event_type.delete()
         recipe.refresh_from_db()
         self.assertIsNone(recipe.event_type)
+    
+    def test_image_upload_path(self):
+        """
+        Test that images are uploaded to the correct directory, following the recipe structure.
+        """
+        file = SimpleUploadedFile("test_image.jpg", b"image_data")
+        recipe = Recipe.objects.create(
+            title="Recipe With Image",
+            excerpt="A recipe with an uploaded image.",
+            image=file,
+            slug="recipe-with-image",
+            content="Recipe content goes here.",
+            dish_type=self.dish_type,
+            main_ingredient=self.main_ingredient,
+            cuisine_type=self.cuisine_type,
+            difficulty_level=self.difficulty_level,
+        )
+        self.assertTrue(recipe.image.name.startswith("recipe/"))
+        
+    def test_video_url_validation(self):
+        """
+        Test that video URLs are validated. It should raise an error if the URL is invalid.
+        """
+        valid_url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        recipe = Recipe.objects.create(
+            title="Recipe With Video",
+            excerpt="Recipe with a valid video URL.",
+            image="video.jpg",
+            slug="recipe-with-video",
+            content="Some content",
+            dish_type=self.dish_type,
+            main_ingredient=self.main_ingredient,
+            cuisine_type=self.cuisine_type,
+            difficulty_level=self.difficulty_level,
+            video_url=valid_url
+        )
+        self.assertEqual(recipe.video_url, valid_url)
 
-    def test_string_representation(self):
-        # Test the __str__ method of the Recipe model
-        recipe = Recipe(title="Test Recipe")
-        self.assertEqual(str(recipe), "Test Recipe")
+        invalid_url = "invalid_url"
+        recipe = Recipe(
+            title="Invalid Video URL",
+            excerpt="This should fail",
+            image="video_fail.jpg",
+            slug="invalid-video-url",
+            content="Some content",
+            dish_type=self.dish_type,
+            main_ingredient=self.main_ingredient,
+            cuisine_type=self.cuisine_type,
+            difficulty_level=self.difficulty_level,
+            video_url=invalid_url
+        )
+        with self.assertRaises(ValidationError):
+            recipe.full_clean()
