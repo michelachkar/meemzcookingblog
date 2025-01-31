@@ -179,7 +179,9 @@
                         <div class="col-sm-12 col-md-12 col-lg-12">
                             <div class="carousel owl-carousel " data-slide="3" data-slide-md="2" data-slide-sm="1"
                                 data-autoplay="true" data-nav="false" data-dots="true" data-space="30" data-loop="true" data-speed="700">
-                                    {% include 'portfolio/includes/recipe_list.html' with recipes=filtered_recipes %}
+                                {% for recipe in filtered_recipes %}
+                                    {% include 'portfolio/includes/recipe_list.html' with recipe=recipe %}
+                                {% endfor %} 
                             </div><!-- /.carousel-->
                         </div><!-- /.col-lg-12 -->
                     </div><!-- /.row -->
