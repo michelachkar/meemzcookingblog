@@ -7,6 +7,7 @@ from portfolio.models.slide import Slide
 from portfolio.models.dish_type import DishType
 from django.db import DatabaseError
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 
@@ -71,11 +72,24 @@ def recipes(request):
 def dish_type_recipes(request, dish_type_slug):
     try:
         dish_type = DishType.objects.get(slug=str(dish_type_slug))
-        recipe_list = Recipe.objects.filter(dish_type_id=dish_type.id)
+        recipe_list = Recipe.objects.filter(dish_type_id=dish_type.id).order_by('-date')
+
+        # Paginate the recipe list
+        paginator = Paginator(recipe_list, 12)  # Show 12 recipes per page
+        page = request.GET.get('page')
+
+        try:
+            recipes = paginator.page(page)
+        except PageNotAnInteger:
+            recipes = paginator.page(1)
+        except EmptyPage:
+            recipes = paginator.page(paginator.num_pages)
+
         return render(request, "./portfolio/dish_type_recipes.html", {
-            "recipe_list": recipe_list,
+            "recipe_list": recipes,
             "dish_type": dish_type
-            })
+        })
+
     except ObjectDoesNotExist:
         raise Http404()
     except DatabaseError as e:
