@@ -26,9 +26,9 @@
               <h1 class="pagetitle__heading">{{dish_type.name}}</h1>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb justify-content-center">
-                  <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                  <li class="breadcrumb-item"><a href="blog-grid.html">Recettes</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">{{dish_type.name}}</li>
+                  <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                  <li class="breadcrumb-item"><a href="{% url 'recipes' %}">Recettes</a></li>
+                  <li class="breadcrumb-item active">{{dish_type.name}}</li>
                 </ol>
               </nav>
             </div><!-- /.col-lg-12 -->
