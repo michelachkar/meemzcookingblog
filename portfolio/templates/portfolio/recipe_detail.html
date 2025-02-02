@@ -5,33 +5,118 @@
     This Post Title
 {% endblock %}
 
-{% block css_files %} 
-    <link rel="stylesheet" href="{% static 'portfolio/recipe_detail.css' %}">
-{% endblock %}
-
 {% block content %}
     
-    <section id="summary">
-        <h2>{{ recipe.title|title }} </h2>
-        <div>
-            {% for tag in tags %}
-                <span class="tag">{{ tag.caption }}</span>
-            {% endfor %}
+    <!-- recipe details header -->
+    <section id="page-title" class="page-title page-title-layout2 text-center bg-overlay bg-overlay-2 bg-parallax">
+        <div class="bg-img"><img src="https://{{ AWS_S3_CUSTOM_DOMAIN }}/{{ recipe.cover_picture}}" alt="background"></div>
+        <svg class="pagetitle__divider-shape" xmlns="http://www.w3.org/2000/svg" width="22" height="61"
+          viewBox="0 0 22 61">
+          <path
+            d="M799,769h2v61h-2V769Zm8,24.8a0.969,0.969,0,0,0-1.911,0,3.012,3.012,0,0,1-.883,2.16,4.486,4.486,0,0,0,0,6.136,3.083,3.083,0,0,1,0,4.32,4.486,4.486,0,0,0,0,6.136,3.088,3.088,0,0,1,0,4.325,4.5,4.5,0,0,0,0,6.142,3.014,3.014,0,0,1,.884,2.163,0.969,0.969,0,0,0,1.911,0,4.414,4.414,0,0,0-1.213-3.07,3.091,3.091,0,0,1,0-4.328,4.491,4.491,0,0,0,0-6.14,3.08,3.08,0,0,1,0-4.319,4.488,4.488,0,0,0,0-6.137,3.081,3.081,0,0,1,0-4.32A4.407,4.407,0,0,0,807,793.8Zm0-20a0.969,0.969,0,0,0-1.911,0,3.014,3.014,0,0,1-.883,2.16,4.486,4.486,0,0,0,0,6.136,3.083,3.083,0,0,1,0,4.32,4.488,4.488,0,0,0,0,6.137,3.087,3.087,0,0,1,0,4.324,4.5,4.5,0,0,0,0,6.142,3.014,3.014,0,0,1,.884,2.163,0.969,0.969,0,0,0,1.911,0,4.414,4.414,0,0,0-1.213-3.07,3.089,3.089,0,0,1,0-4.327,4.491,4.491,0,0,0,0-6.14,3.081,3.081,0,0,1,0-4.32,4.488,4.488,0,0,0,0-6.137,3.081,3.081,0,0,1,0-4.32A4.409,4.409,0,0,0,807,773.8ZM793,793.8a0.969,0.969,0,0,1,1.911,0,3.012,3.012,0,0,0,.883,2.16,4.486,4.486,0,0,1,0,6.136,3.083,3.083,0,0,0,0,4.32,4.486,4.486,0,0,1,0,6.136,3.088,3.088,0,0,0,0,4.325,4.5,4.5,0,0,1,0,6.142,3.014,3.014,0,0,0-.884,2.163,0.969,0.969,0,0,1-1.911,0,4.414,4.414,0,0,1,1.213-3.07,3.091,3.091,0,0,0,0-4.328,4.491,4.491,0,0,1,0-6.14,3.08,3.08,0,0,0,0-4.319,4.488,4.488,0,0,1,0-6.137,3.081,3.081,0,0,0,0-4.32A4.407,4.407,0,0,1,793,793.8Zm0-20a0.969,0.969,0,0,1,1.911,0,3.014,3.014,0,0,0,.883,2.16,4.486,4.486,0,0,1,0,6.136,3.083,3.083,0,0,0,0,4.32,4.488,4.488,0,0,1,0,6.137,3.087,3.087,0,0,0,0,4.324,4.5,4.5,0,0,1,0,6.142,3.014,3.014,0,0,0-.884,2.163,0.969,0.969,0,0,1-1.911,0,4.414,4.414,0,0,1,1.213-3.07,3.089,3.089,0,0,0,0-4.327,4.491,4.491,0,0,1,0-6.14,3.081,3.081,0,0,0,0-4.32,4.488,4.488,0,0,1,0-6.137,3.081,3.081,0,0,0,0-4.32A4.409,4.409,0,0,1,793,773.8Zm-4,5.2h2v41h-2V779Zm20,0h2v41h-2V779Z"
+            transform="translate(-789 -769)"></path>
+        </svg>
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-10 offset-lg-1">
+              <span class="pagetitle__subheading">{{recipe.date}}</span>
+              <h1 class="pagetitle__heading">{{recipe.title}} </h1>
+            </div><!-- /.col-lg-10 -->
+          </div><!-- /.row -->
+        </div><!-- /.container -->
+    </section><!-- /.recipe details header -->
+  
+      <!-- Recipe details content -->
+      <section id="blogSingleRightSidebar" class="blog blog-single pb-50">
+        <div class="container">
+          <div class="row">
 
-        </div>
-        <article>
-            <img src="{% static 'portfolio/images/'|add:recipe.image %}" alt="{{ recipe.title }}">
-            <address>{{ recipe.main_ingredient }}</address>
-            <div>
-                Last update on <time>{{ recipe.date|date:'d M Y' }}</time>
+            <!-- Main Content -->
+            <div class="col-sm-12 col-md-12 col-lg-8">
+              <div class="post-item">
+                <div class="post__content">
+                  <div class="post__desc">
+                    {% if recipe.video_url %}
+                    <div class="mb-30">
+                        <iframe width="100%" height="415" 
+                            src={{recipe.video_url}} 
+                            title="Video of recipe {{recipe.title}}" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    {% else %}
+                    <div class="post__img">
+                      <a>
+                        <img src="https://{{ AWS_S3_CUSTOM_DOMAIN }}/{{ recipe.image}}" alt="post image">
+                      </a>
+                    </div><!-- /.post-img -->
+                    {% endif %}
+
+                    {{ recipe.content|safe }}
+                  </div><!-- /.post-desc -->
+                </div><!-- /.post-content -->
+              </div><!-- /.post-item -->
+              <div class="widget-tags mb-40">
+                <ul class="list-unstyled">
+                  <li><a>{{recipe.dish_type}}</a></li>
+                  <li><a>{{recipe.main_ingredient}}</a></li>
+                  <li><a>{{recipe.cuisine_type}}</a></li>
+                  <li><a>{{recipe.difficulty_level}}</a></li>
+                  <li><a>{{recipe.event_type}}</a></li>
+                </ul>
+              </div>
+            </div><!-- /.Main Content -->
+
+            <!-- Sidebar -->
+            <div class="col-sm-12 col-md-12 col-lg-4">
+              <aside class="sidebar">
+                <div class="widget widget-categories">
+                  <h5 class="widget__title">Ingrédients</h5>
+                  <div class="widget-content">
+                    <ul class="list-unstyled mb-0">
+                        {% for ingredient in ingredients %}
+                        <li><a href="#">{{ingredient.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                  </div><!-- /.widget-content -->
+                </div><!-- /.widget-categories -->
+                <div class="widget widget-posts">
+                  <h5 class="widget__title">Recettes similaires</h5>
+                  <div class="widget__content">
+                    {% for recipe in similar_recipes %}
+                    <div class="widget-post-item">
+                      <div class="widget__post-img">
+                        <a href="#"><img src="https://{{ AWS_S3_CUSTOM_DOMAIN }}/{{ recipe.cover_picture}}" alt="product"></a>
+                      </div><!-- /.widget-post-img -->
+                      <div class="widget__post-content">
+                        <span class="widget__post-date">{{recipe.date}}</span>
+                        <h6 class="widget__post-title"><a href="#">{{recipe.title}}</a></h6>
+                      </div><!-- /.widget-post-content -->
+                    </div><!-- /.widget-post-item -->
+                    {% endfor %}
+                  </div><!-- /.widget-content -->
+                </div><!-- /.widget-posts -->
+                <div class="widget widget-tags">
+                  <h5 class="widget__title">Tags</h5>
+                  <div class="widget-content">
+                    <ul class="list-unstyled">
+                        {% for tag in tags %}
+                        <li><a>{{tag.caption}}</a></li>
+                        {% endfor %}
+
+                    </ul>
+                  </div><!-- /.widget-content -->
+                </div><!-- /.widget-Tags -->
+              </aside><!-- /.sidebar -->
             </div>
-        </article>
-    </section>
+            <!-- /.Sidebar -->
 
-    <main>
-        <p>
-            {{ recipe.content|linebreaks }}
-        </p>
-    </main>
+          </div><!-- /.row -->
+        </div><!-- /.container -->
+      </section><!-- /.Recipe details content -->
+  
 
 {% endblock %}

@@ -44,7 +44,7 @@
             <!-- Post Item #1 -->
             {% for recipe in recipe_list %}
               <div class="col-sm-12 col-md-6 col-lg-4">
-                {% include 'portfolio/includes/recipe_list.html' with recipe=recipe %}
+                {% include 'portfolio/includes/recipe.html' with recipe=recipe %}
               </div><!-- /.col-lg-4 -->
             {% endfor %} 
           </div><!-- /.row -->
@@ -76,7 +76,7 @@
             </div>
           </div>
           <!-- /.Pagination -->
-          
+
         </div><!-- /.container -->
       </section><!-- /.Recipe List -->
 

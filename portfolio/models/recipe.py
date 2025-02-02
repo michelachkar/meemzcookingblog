@@ -43,6 +43,15 @@ class Recipe(models.Model):
         blank=True
     )
 
+    cover_picture = models.ImageField(
+        upload_to="recipe",
+        storage=S3Boto3Storage(),
+        verbose_name="Recipe Cover Picture",
+        help_text="Upload a cover picture for this recipe.",
+        null=True, 
+        blank=True
+    )
+
     date = models.DateField(
         auto_now=True, 
         verbose_name="Last Updated"

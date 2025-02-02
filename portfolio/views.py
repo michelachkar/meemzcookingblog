@@ -12,23 +12,25 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
 # Displays home page
+
+
 def home(request):
     try:
-
         # Getting all recipes
         all_recipes = []
         dish_types = DishType.objects.all()
         for dish_type in dish_types:
-            filtered_recipes = Recipe.objects.filter(dish_type_id=dish_type.id).order_by('-date')[:6]
-            all_recipes.append((dish_type,filtered_recipes))
+            filtered_recipes = Recipe.objects.filter(
+                dish_type_id=dish_type.id).order_by('-date')[:6]
+            all_recipes.append((dish_type, filtered_recipes))
 
-        #Getting Gallery Images
+        # Getting Gallery Images
         slides = Slide.objects.all()
 
-        #Getting Slides
+        # Getting Slides
         gallery_images = GalleryImage.objects.all()[:8]
-            
-        #Getting content context
+
+        # Getting content context
         context = {
             "intro_bloc": {
                 "title": "Bienvenue dans mon blog",
@@ -46,12 +48,12 @@ def home(request):
             }
         }
 
-        return render(request, 'portfolio/home.html', {'all_recipes': all_recipes, 'gallery_images':gallery_images, 'slides':slides, 'context': context})
+        return render(request, 'portfolio/home.html', {'all_recipes': all_recipes, 'gallery_images': gallery_images, 'slides': slides, 'context': context})
     except DatabaseError as e:
         return HttpResponseServerError(f"Database error: {str(e)}")
     except Exception as e:
         return HttpResponseServerError(f"An unexpected error occurred: {str(e)}")
-    
+
 
 # Displays all recipes
 def recipes(request):
@@ -66,13 +68,14 @@ def recipes(request):
         return HttpResponseServerError(f"Database error: {str(e)}")
     except Exception as e:
         return HttpResponseServerError(f"An unexpected error occurred: {str(e)}")
-    
+
 
 # Displays recipes by dish type
 def dish_type_recipes(request, dish_type_slug):
     try:
         dish_type = DishType.objects.get(slug=str(dish_type_slug))
-        recipe_list = Recipe.objects.filter(dish_type_id=dish_type.id).order_by('-date')
+        recipe_list = Recipe.objects.filter(
+            dish_type_id=dish_type.id).order_by('-date')
 
         # Paginate the recipe list
         paginator = Paginator(recipe_list, 12)  # Show 12 recipes per page
@@ -97,15 +100,21 @@ def dish_type_recipes(request, dish_type_slug):
     except Exception as e:
         return HttpResponseServerError(f"An unexpected error occurred: {str(e)}")
 
-
-
+# Displays recipe details
 def recipe_detail(request, slug):
     try:
+        #Get recipe
         recipe = Recipe.objects.get(slug=slug)
+        
+        #Get similar recipes based on Dish Type of main recipe
+        similar_recipes = Recipe.objects.filter(dish_type=recipe.dish_type).exclude(id=recipe.id).order_by('-date')[:2]
+
         return render(request, "./portfolio/recipe_detail.html", {
-                "recipe": recipe,
-                "tags": recipe.tags.all()
-            })
+            "recipe": recipe,
+            "ingredients": recipe.ingredients.all(),
+            "tags": recipe.tags.all(),
+            "similar_recipes": similar_recipes
+        })
     except ObjectDoesNotExist:
         raise Http404()
     except DatabaseError as e:
