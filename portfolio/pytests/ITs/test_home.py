@@ -11,7 +11,7 @@ from portfolio.models.main_ingredient import MainIngredient
 from portfolio.models.tag import Tag
 from datetime import date
 
-class RecipeIntegrationTests(TestCase):
+class HomeViewTests(TestCase):
     def setUp(self):
         # Initialize a test client and create all the necessary related objects for testing
         self.client = Client()

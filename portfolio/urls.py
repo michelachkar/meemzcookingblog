@@ -9,4 +9,5 @@ urlpatterns = [
     path("recettes/<slug:slug>", views.recipe_detail, name="recipe_detail"),
     path("ckeditor5/", include("django_ckeditor_5.urls")),
     path("services/<slug:slug>", views.service_detail, name="service_detail"),
+    path("a-propos", views.about, name="about"),
 ]
