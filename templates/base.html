@@ -45,13 +45,13 @@
                 </ul><!-- /.dropdown-menu -->
               </li><!-- /.nav-item -->
               <li class="nav__item with-dropdown">
-                <a href="#" data-toggle="dropdown" class="dropdown-toggle nav__item-link">Services</a>
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle nav__item-link">Nos ateliers de cuisine</a>
                 <ul class="dropdown-menu">
-                    <li class="nav__item"><a href="our-chefs.html" class="nav__item-link">Chef à domicile</a></li>
+                    <li class="nav__item"><a href="{% url 'service_detail' 'cours-de-cuisine' %}" class="nav__item-link">Cours de cuisine</a></li>
                     <!-- /.nav-item -->
-                    <li class="nav__item"><a href="our-chefs.html" class="nav__item-link">Création de contenu</a></li>
+                    <li class="nav__item"><a href="{% url 'service_detail' 'team-building-cuisine' %}" class="nav__item-link">Team building cuisine</a></li>
                     <!-- /.nav-item -->
-                    <li class="nav__item"><a href="our-guestbook.html" class="nav__item-link">Dîner privé et Événements</a></li>
+                    <li class="nav__item"><a href="{% url 'service_detail' 'atelier-cuisine-enfants' %}" class="nav__item-link">Atelier cuisine enfants</a></li>
                     <!-- /.nav-item -->
                   </ul><!-- /.dropdown-menu -->
               </li><!-- /.nav-item -->
@@ -99,7 +99,7 @@
               </div><!-- /.col-lg-12 -->
               <div class="col-sm-12 col-md-12 col-lg-4">
                 <div class="contact-box" style="padding:10px">
-                  <h6 class="contact__box-title">Dîner privé et Événements</h6>
+                  <h6 class="contact__box-title">Cours de cuisine</h6>
                   <ul class="contact__box-list list-unstyled">
                     <li>22 Alnahas Building, 2 AlBahr St, Tanta Al-Gharbia Governorate, Egypt</li>
                   </ul>
@@ -107,7 +107,7 @@
               </div><!-- /.col-lg-4 -->
               <div class="col-sm-12 col-md-12 col-lg-4">
                 <div class="contact-box" style="padding:10px">
-                  <h6 class="contact__box-title">Creation de contenu</h6>
+                  <h6 class="contact__box-title">Team building cuisine</h6>
                   <ul class="contact__box-list list-unstyled">
                     <li>22 Alnahas Building, 2 AlBahr St, Tanta Al-Gharbia Governorate, Egypt</li>
                   </ul>
@@ -115,7 +115,7 @@
               </div><!-- /.col-lg-4 -->
               <div class="col-sm-12 col-md-12 col-lg-4">
                 <div class="contact-box" style="padding:10px">
-                  <h6 class="contact__box-title">Chef à domicile</h6>
+                  <h6 class="contact__box-title">Atelier cuisine enfant</h6>
                   <ul class="contact__box-list list-unstyled">
                     <li>22 Alnahas Building, 2 AlBahr St, Tanta Al-Gharbia Governorate, Egypt</li>
                   </ul>
