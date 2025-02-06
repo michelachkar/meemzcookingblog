@@ -1,0 +1,388 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    This Post Title
+{% endblock %}
+
+{% block content %}
+
+    <!-- Header -->
+    <section id="page-title" class="page-title page-title-layout1 text-center bg-overlay bg-overlay-2 bg-parallax">
+      <div class="bg-img"><img src="{% static 'portfolio/images/backgrounds/2.jpg' %}" alt="background"></div>
+      <svg class="pagetitle__divider-shape" xmlns="http://www.w3.org/2000/svg" width="22" height="61"
+        viewBox="0 0 22 61">
+        <path
+          d="M799,769h2v61h-2V769Zm8,24.8a0.969,0.969,0,0,0-1.911,0,3.012,3.012,0,0,1-.883,2.16,4.486,4.486,0,0,0,0,6.136,3.083,3.083,0,0,1,0,4.32,4.486,4.486,0,0,0,0,6.136,3.088,3.088,0,0,1,0,4.325,4.5,4.5,0,0,0,0,6.142,3.014,3.014,0,0,1,.884,2.163,0.969,0.969,0,0,0,1.911,0,4.414,4.414,0,0,0-1.213-3.07,3.091,3.091,0,0,1,0-4.328,4.491,4.491,0,0,0,0-6.14,3.08,3.08,0,0,1,0-4.319,4.488,4.488,0,0,0,0-6.137,3.081,3.081,0,0,1,0-4.32A4.407,4.407,0,0,0,807,793.8Zm0-20a0.969,0.969,0,0,0-1.911,0,3.014,3.014,0,0,1-.883,2.16,4.486,4.486,0,0,0,0,6.136,3.083,3.083,0,0,1,0,4.32,4.488,4.488,0,0,0,0,6.137,3.087,3.087,0,0,1,0,4.324,4.5,4.5,0,0,0,0,6.142,3.014,3.014,0,0,1,.884,2.163,0.969,0.969,0,0,0,1.911,0,4.414,4.414,0,0,0-1.213-3.07,3.089,3.089,0,0,1,0-4.327,4.491,4.491,0,0,0,0-6.14,3.081,3.081,0,0,1,0-4.32,4.488,4.488,0,0,0,0-6.137,3.081,3.081,0,0,1,0-4.32A4.409,4.409,0,0,0,807,773.8ZM793,793.8a0.969,0.969,0,0,1,1.911,0,3.012,3.012,0,0,0,.883,2.16,4.486,4.486,0,0,1,0,6.136,3.083,3.083,0,0,0,0,4.32,4.486,4.486,0,0,1,0,6.136,3.088,3.088,0,0,0,0,4.325,4.5,4.5,0,0,1,0,6.142,3.014,3.014,0,0,0-.884,2.163,0.969,0.969,0,0,1-1.911,0,4.414,4.414,0,0,1,1.213-3.07,3.091,3.091,0,0,0,0-4.328,4.491,4.491,0,0,1,0-6.14,3.08,3.08,0,0,0,0-4.319,4.488,4.488,0,0,1,0-6.137,3.081,3.081,0,0,0,0-4.32A4.407,4.407,0,0,1,793,793.8Zm0-20a0.969,0.969,0,0,1,1.911,0,3.014,3.014,0,0,0,.883,2.16,4.486,4.486,0,0,1,0,6.136,3.083,3.083,0,0,0,0,4.32,4.488,4.488,0,0,1,0,6.137,3.087,3.087,0,0,0,0,4.324,4.5,4.5,0,0,1,0,6.142,3.014,3.014,0,0,0-.884,2.163,0.969,0.969,0,0,1-1.911,0,4.414,4.414,0,0,1,1.213-3.07,3.089,3.089,0,0,0,0-4.327,4.491,4.491,0,0,1,0-6.14,3.081,3.081,0,0,0,0-4.32,4.488,4.488,0,0,1,0-6.137,3.081,3.081,0,0,0,0-4.32A4.409,4.409,0,0,1,793,773.8Zm-4,5.2h2v41h-2V779Zm20,0h2v41h-2V779Z"
+          transform="translate(-789 -769)"></path>
+      </svg>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-12">
+            <span class="pagetitle__subheading">Nos Ateliers</span>
+            <h1 class="pagetitle__heading">Team building cuisine</h1>
+          </div><!-- /.col-lg-12 -->
+        </div><!-- /.row -->
+      </div><!-- /.container -->
+    </section>
+    <!-- /.Header -->
+
+    <!-- Service details -->
+    <section id="fancyboxLayout1" class="fancybox-layout1 text-center pb-40">
+      <div class="container">
+        <div class="row">
+          <!-- fancybox item #1 -->
+          <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="fancybox-item">
+              <div class="fancybox__icon">
+                <img src="{% static 'portfolio/images/icons/1.png' %}" alt="icon">
+              </div><!-- /.fancybox-icon -->
+              <div class="fancybox__content">
+                <h4 class="fancybox__title">Daily Fresh Menus</h4>
+                <p class="fancybox__desc">We help you treat yourself with a different meal everyday, thanks to our daily
+                  changing menus and our awesome creative chefs!</p>
+              </div><!-- /.fancybox-content -->
+            </div><!-- /.fancybox-item -->
+          </div><!-- /.col-lg-4 -->
+          <!-- fancybox item #2 -->
+          <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="fancybox-item">
+              <div class="fancybox__icon">
+                <img src="{% static 'portfolio/images/icons/2.png' %}" alt="icon">
+              </div><!-- /.fancybox-icon -->
+              <div class="fancybox__content">
+                <h4 class="fancybox__title">Fresh Ingredient</h4>
+                <p class="fancybox__desc">Who said healthy food can't also be delicious? Our creative chefs use fresh
+                  and seasonal ingredients to make affordable, tasty</p>
+              </div><!-- /.fancybox-content -->
+            </div><!-- /.fancybox-item -->
+          </div><!-- /.col-lg-4 -->
+          <!-- fancybox item #3 -->
+          <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="fancybox-item">
+              <div class="fancybox__icon">
+                <img src="{% static 'portfolio/images/icons/3.png' %}" alt="icon">
+              </div><!-- /.fancybox-icon -->
+              <div class="fancybox__content">
+                <h4 class="fancybox__title">Tasty Meals</h4>
+                <p class="fancybox__desc">We help you treat yourself with a different meal everyday, thanks to our daily
+                  changing menus and our awesome creative chefs!</p>
+              </div><!-- /.fancybox-content -->
+            </div><!-- /.fancybox-item -->
+          </div><!-- /.col-lg-4 -->
+          <!-- fancybox item #4 -->
+          <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="fancybox-item">
+              <div class="fancybox__icon">
+                <img src="{% static 'portfolio/images/icons/4.png' %}" alt="icon">
+              </div><!-- /.fancybox-icon -->
+              <div class="fancybox__content">
+                <h4 class="fancybox__title">Creative Chef</h4>
+                <p class="fancybox__desc">Who said healthy food can't also be delicious? Our creative chefs use fresh
+                  and seasonal ingredients to make affordable, tasty</p>
+              </div><!-- /.fancybox-content -->
+            </div><!-- /.fancybox-item -->
+          </div><!-- /.col-lg-4 -->
+          <!-- fancybox item #5 -->
+          <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="fancybox-item">
+              <div class="fancybox__icon">
+                <img src="{% static 'portfolio/images/icons/5.png' %}" alt="icon">
+              </div><!-- /.fancybox-icon -->
+              <div class="fancybox__content">
+                <h4 class="fancybox__title">Real Pizza</h4>
+                <p class="fancybox__desc">We help you treat yourself with a different meal everyday, thanks to our daily
+                  changing menus and our awesome creative chefs!</p>
+              </div><!-- /.fancybox-content -->
+            </div><!-- /.fancybox-item -->
+          </div><!-- /.col-lg-4 -->
+          <!-- fancybox item #6 -->
+          <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="fancybox-item">
+              <div class="fancybox__icon">
+                <img src="{% static 'portfolio/images/icons/6.png' %}" alt="icon">
+              </div><!-- /.fancybox-icon -->
+              <div class="fancybox__content">
+                <h4 class="fancybox__title">Awesome Coffee</h4>
+                <p class="fancybox__desc">Who said healthy food can't also be delicious? Our creative chefs use fresh
+                  and seasonal ingredients to make affordable, tasty</p>
+              </div><!-- /.fancybox-content -->
+            </div><!-- /.fancybox-item -->
+          </div><!-- /.col-lg-4 -->
+        </div><!-- /.row -->
+      </div><!-- /.container -->
+    </section>
+    <!-- /. Service details -->
+
+    <!-- Testimonials -->
+    <section id="testimonialsLayout1" class="testimonials testimonials-layout1 bg-overlay pt-130 pb-110">
+      <div class="bg-img"><img src="{% static 'portfolio/images/backgrounds/7.jpg' %}" alt="background"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-3">
+            <div class="heading heading-white text-center mb-50">
+              <span class="heading__subtitle">Our Guestbook</span>
+              <h2 class="heading__title">People Say About Us!</h2>
+              <div class="heading__icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                  <path
+                    d="M515,925a10,10,0,1,0,10,10A10.011,10.011,0,0,0,515,925Zm7,13.865a2.568,2.568,0,0,1-.651-0.549,3.235,3.235,0,0,0-5.209,0,1.449,1.449,0,0,1-1.146.683,1.419,1.419,0,0,1-1.2-.695,3.2,3.2,0,0,0-2.548-1.3,3.345,3.345,0,0,0-2.605,1.316,2.625,2.625,0,0,1-.64.544,7.953,7.953,0,0,1-.928-2.86h15.862A7.926,7.926,0,0,1,522,938.863ZM507.069,934a7.948,7.948,0,0,1,.928-2.859,2.617,2.617,0,0,1,.64.543A3.345,3.345,0,0,0,511.242,933a3.2,3.2,0,0,0,2.548-1.3,1.423,1.423,0,0,1,1.2-.7,1.452,1.452,0,0,1,1.146.685,3.237,3.237,0,0,0,5.209,0,2.575,2.575,0,0,1,.651-0.55,7.939,7.939,0,0,1,.932,2.865H507.069ZM515,927a7.975,7.975,0,0,1,5.8,2.509,5.325,5.325,0,0,0-.914.806,1.3,1.3,0,0,1-2.292,0,3.287,3.287,0,0,0-5.289.035,1.286,1.286,0,0,1-1.066.648,1.452,1.452,0,0,1-1.145-.683,5.348,5.348,0,0,0-.9-0.8A7.972,7.972,0,0,1,515,927Zm0,16a7.97,7.97,0,0,1-5.808-2.516,5.3,5.3,0,0,0,.9-0.8,1.452,1.452,0,0,1,1.145-.685,1.288,1.288,0,0,1,1.066.649,3.288,3.288,0,0,0,5.289.036,1.3,1.3,0,0,1,2.292,0,5.241,5.241,0,0,0,.914.806A7.972,7.972,0,0,1,515,943Z"
+                    transform="translate(-505 -925)"></path>
+                </svg>
+              </div>
+            </div><!-- /.heading -->
+          </div><!-- /.col-lg-6 -->
+        </div><!-- /.row -->
+        <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="carousel owl-carousel carousel-dots carousel-dots-light" data-slide="3" data-slide-md="2"
+              data-slide-sm="1" data-autoplay="true" data-nav="false" data-dots="true" data-space="30" data-loop="true"
+              data-speed="800">
+              <!-- Testimonial Item #1 -->
+              <div class=" testimonial-item">
+                <div class="testimonial__icon"></div>
+                <div class="testimonial__content">
+                  <div class="testimonial__thumb">
+                    <img src="{% static 'portfolio/images/testimonials/thumbs/1.png' %}" alt="author thumb">
+                  </div><!-- /.testimonial-thumb -->
+                  <div class="testimonial__rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                  </div><!-- /.testimonial-rating -->
+                  <p class="testimonial__desc">“Lovely atmosphere staff were excellent, very attentive and polite. We
+                    felt taken care of! Food came out quickly and was hot and delicious.”</p>
+                </div><!-- /.testimonial-content -->
+                <div class="testimonial__meta">
+                  <h5 class="testimonial__meta-title">John Peter</h5>
+                  <p class="testimonial__meta-desc">Guest</p>
+                </div><!-- /.testimonial-meta -->
+              </div><!-- /. testimonial-item -->
+              <!-- Testimonial Item #2 -->
+              <div class=" testimonial-item">
+                <div class="testimonial__icon"></div>
+                <div class="testimonial__content">
+                  <div class="testimonial__thumb">
+                    <img src="{% static 'portfolio/images/testimonials/thumbs/2.png' %}" alt="author thumb">
+                  </div><!-- /.testimonial-thumb -->
+                  <div class="testimonial__rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                  </div><!-- /.testimonial-rating -->
+                  <p class="testimonial__desc">“Been to this stunning place many times over the last years. Tonight I
+                    have to say, it was good as it ever was. Superb food, exceedingly good staff.”</p>
+                </div><!-- /.testimonial-content -->
+                <div class="testimonial__meta">
+                  <h5 class="testimonial__meta-title">Sami Wade</h5>
+                  <p class="testimonial__meta-desc">Guest</p>
+                </div><!-- /.testimonial-meta -->
+              </div><!-- /. testimonial-item -->
+              <!-- Testimonial Item #3 -->
+              <div class=" testimonial-item">
+                <div class="testimonial__icon"></div>
+                <div class="testimonial__content">
+                  <div class="testimonial__thumb">
+                    <img src="{% static 'portfolio/images/testimonials/thumbs/3.png' %}" alt="author thumb">
+                  </div><!-- /.testimonial-thumb -->
+                  <div class="testimonial__rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                  </div><!-- /.testimonial-rating -->
+                  <p class="testimonial__desc">“Once again, I feel compelled to write about our wonderful dining
+                    experience. We have shared meals or conversations about our meals at your restaurant.”</p>
+                </div><!-- /.testimonial-content -->
+                <div class="testimonial__meta">
+                  <h5 class="testimonial__meta-title">Martin Hope</h5>
+                  <p class="testimonial__meta-desc">ProMov</p>
+                </div><!-- /.testimonial-meta -->
+              </div><!-- /. testimonial-item -->
+              <!-- Testimonial Item #4 -->
+              <div class=" testimonial-item">
+                <div class="testimonial__icon"></div>
+                <div class="testimonial__content">
+                  <div class="testimonial__thumb">
+                    <img src="{% static 'portfolio/images/testimonials/thumbs/1.png' %}" alt="author thumb">
+                  </div><!-- /.testimonial-thumb -->
+                  <div class="testimonial__rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                  </div><!-- /.testimonial-rating -->
+                  <p class="testimonial__desc">“Lovely atmosphere staff were excellent, very attentive and polite. We
+                    felt taken care of! Food came out quickly and was hot and delicious.”</p>
+                </div><!-- /.testimonial-content -->
+                <div class="testimonial__meta">
+                  <h5 class="testimonial__meta-title">John Peter</h5>
+                  <p class="testimonial__meta-desc">Guest</p>
+                </div><!-- /.testimonial-meta -->
+              </div><!-- /. testimonial-item -->
+              <!-- Testimonial Item #5 -->
+              <div class=" testimonial-item">
+                <div class="testimonial__icon"></div>
+                <div class="testimonial__content">
+                  <div class="testimonial__thumb">
+                    <img src="{% static 'portfolio/images/testimonials/thumbs/2.png' %}" alt="author thumb">
+                  </div><!-- /.testimonial-thumb -->
+                  <div class="testimonial__rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                  </div><!-- /.testimonial-rating -->
+                  <p class="testimonial__desc">“Been to this stunning place many times over the last years. Tonight I
+                    have to say, it was good as it ever was. Superb food, exceedingly good staff.”</p>
+                </div><!-- /.testimonial-content -->
+                <div class="testimonial__meta">
+                  <h5 class="testimonial__meta-title">Sami Wade</h5>
+                  <p class="testimonial__meta-desc">Guest</p>
+                </div><!-- /.testimonial-meta -->
+              </div><!-- /. testimonial-item -->
+              <!-- Testimonial Item #6 -->
+              <div class=" testimonial-item">
+                <div class="testimonial__icon"></div>
+                <div class="testimonial__content">
+                  <div class="testimonial__thumb">
+                    <img src="{% static 'portfolio/images/testimonials/thumbs/3.png' %}" alt="author thumb">
+                  </div><!-- /.testimonial-thumb -->
+                  <div class="testimonial__rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                  </div><!-- /.testimonial-rating -->
+                  <p class="testimonial__desc">“Once again, I feel compelled to write about our wonderful dining
+                    experience. We have shared meals or conversations about our meals at your restaurant.”</p>
+                </div><!-- /.testimonial-content -->
+                <div class="testimonial__meta">
+                  <h5 class="testimonial__meta-title">Martin Hope</h5>
+                  <p class="testimonial__meta-desc">ProMov</p>
+                </div><!-- /.testimonial-meta -->
+              </div><!-- /. testimonial-item -->
+            </div><!-- /.carousel -->
+          </div><!-- /.col-lg-12 -->
+        </div><!-- /.row -->
+      </div><!-- /.container -->
+    </section>
+    <!-- /.Testimonials -->
+
+    <!-- Description -->
+    <section id="blogSingleRightSidebar" class="blog blog-single pb-50">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-10 offset-lg-1">
+            <div class="post-item">
+              <div class="post__content">
+                <div class="post__desc">
+                  <p>We’ve all been dying to know which type of magic the Gaines would bring to the café, a landmark on
+                    Waco’s bustling traffic circle that closed down in February of 2016. The Fixer Upper stars’ Magnolia
+                    brand, which includes the Magnolia Market, a premium interior paint line, a bakery, and a quarterly
+                    home magazine, has already reshaped the culture and perception of Waco, Texas.</p>
+                  <p>The Elite Café, which was originally opened in 1919, has catered to Elvis Presley when he was
+                    training at Fort Hood in the 1950s, and previously served steaks, burgers, and salads. It was a
+                    landmark for locals and passersby traveling from Austin to Dallas, most recognizable by a baby-blue
+                    ’56 Cadillac parked right out front. “I’ve always been a breakfast connoisseur. I always do a heavy,
+                    bigger breakfast, but Jo is the exact opposite. She was kind enough to come with me on this one, and
+                    we are going to do up a breakfast joint here in town.” </p>
+                  <p>“The restaurant itself is literally one big giant kitchen. When we first got in there, it was all
+                    the things you can imagine—dingy, musky. But if I took you in there today, you’d be like ‘Oh! This
+                    is so clean, everything smells so great.’ Those are a few benefits of a little bit of elbow grease
+                    and hard work on the front end.” As Chip’s vision has come to fruition, he’s garnered a lot more
+                    support. We’ve all been dying to know which type of magic the Gaines would bring to the café, a
+                    landmark on Waco’s bustling traffic circle that closed down in February of 2016. The Fixer Upper
+                    stars’ Magnolia brand, which includes the Magnolia Market, a premium interior paint line, a bakery,
+                    and a quarterly home magazine, has already reshaped the culture and perception of Waco, Texas.</p>
+                </div><!-- /.post-desc -->
+              </div><!-- /.post-content -->
+            </div><!-- /.post-item -->
+          </div><!-- /.col-lg-10 -->
+          <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="portfolio-gallery">
+              <div class="row">
+                <!-- portfolio item #1 -->
+                <div class="col-sm-6 col-md-6 col-lg-4">
+                  <div class="portfolio-item">
+                    <div class="portfolio__img">
+                      <img src="{% static 'portfolio/images/gallery/1.jpg' %}" alt="portfolio img">
+                    </div><!-- /.portfolio-img -->
+                    <div class="portfolio__hover">
+                      <a href="{% static 'portfolio/images/gallery/1.jpg' %}" data-lightbox="lightbox" class="zoom__icon"></a>
+                    </div><!-- /.portfolio__hover-->
+                  </div><!-- /.portfolio-item -->
+                </div><!-- /.col-lg-4 -->
+                <!-- portfolio item #2 -->
+                <div class="col-sm-6 col-md-6 col-lg-4">
+                  <div class="portfolio-item">
+                    <div class="portfolio__img">
+                      <img src="{% static 'portfolio/images/gallery/2.jpg' %}" alt="portfolio img">
+                    </div><!-- /.portfolio-img -->
+                    <div class="portfolio__hover">
+                      <a href="{% static 'portfolio/images/gallery/2.jpg' %}" data-lightbox="lightbox" class="zoom__icon"></a>
+                    </div><!-- /.portfolio__hover-->
+                  </div><!-- /.portfolio-item -->
+                </div><!-- /.col-lg-4 -->
+                <!-- portfolio item #3 -->
+                <div class="col-sm-6 col-md-6 col-lg-4">
+                  <div class="portfolio-item">
+                    <div class="portfolio__img">
+                      <img src="{% static 'portfolio/images/gallery/3.jpg' %}" alt="portfolio img">
+                    </div><!-- /.portfolio-img -->
+                    <div class="portfolio__hover">
+                      <a href="{% static 'portfolio/images/gallery/3.jpg' %}" data-lightbox="lightbox" class="zoom__icon"></a>
+                    </div><!-- /.portfolio__hover-->
+                  </div><!-- /.portfolio-item -->
+                </div><!-- /.col-lg-4 -->
+                <!-- portfolio item #4 -->
+                <div class="col-sm-6 col-md-6 col-lg-4">
+                  <div class="portfolio-item">
+                    <div class="portfolio__img">
+                      <img src="{% static 'portfolio/images/gallery/4.jpg' %}" alt="portfolio img">
+                    </div><!-- /.portfolio-img -->
+                    <div class="portfolio__hover">
+                      <a href="{% static 'portfolio/images/gallery/4.jpg' %}" data-lightbox="lightbox" class="zoom__icon"></a>
+                    </div><!-- /.portfolio__hover-->
+                  </div><!-- /.portfolio-item -->
+                </div><!-- /.col-lg-4 -->
+                <!-- portfolio item #5 -->
+                <div class="col-sm-6 col-md-6 col-lg-4">
+                  <div class="portfolio-item">
+                    <div class="portfolio__img">
+                      <img src="{% static 'portfolio/images/gallery/5.jpg' %}" alt="portfolio img">
+                    </div><!-- /.portfolio-img -->
+                    <div class="portfolio__hover">
+                      <a href="{% static 'portfolio/images/gallery/5.jpg' %}" data-lightbox="lightbox" class="zoom__icon"></a>
+                    </div><!-- /.portfolio__hover-->
+                  </div><!-- /.portfolio-item -->
+                </div><!-- /.col-lg-4 -->
+                <!-- portfolio item #6 -->
+                <div class="col-sm-6 col-md-6 col-lg-4">
+                  <div class="portfolio-item">
+                    <div class="portfolio__img">
+                      <img src="{% static 'portfolio/images/gallery/6.jpg' %}" alt="portfolio img">
+                    </div><!-- /.portfolio-img -->
+                    <div class="portfolio__hover">
+                      <a href="{% static 'portfolio/images/gallery/6.jpg' %}" data-lightbox="lightbox" class="zoom__icon"></a>
+                    </div><!-- /.portfolio__hover-->
+                  </div><!-- /.portfolio-item -->
+                </div><!-- /.col-lg-4 -->
+              </div><!-- /.row -->
+            </div><!-- /.portfolio Gallery -->
+          </div><!-- /.col-lg-12 -->
+        </div><!-- /.row -->
+      </div><!-- /.container -->
+    </section>
+    <!-- /.Description -->
+
+
+{% endblock %}

@@ -24,12 +24,6 @@ def home(request):
                 dish_type_id=dish_type.id).order_by('-date')[:6]
             all_recipes.append((dish_type, filtered_recipes))
 
-        # Getting Gallery Images
-        slides = Slide.objects.all()
-
-        # Getting Slides
-        gallery_images = GalleryImage.objects.all()[:8]
-
         # Getting content context
         context = {
             "intro_bloc": {
@@ -48,7 +42,12 @@ def home(request):
             }
         }
 
-        return render(request, 'portfolio/home.html', {'all_recipes': all_recipes, 'gallery_images': gallery_images, 'slides': slides, 'context': context})
+        return render(request, 'portfolio/home.html', {
+            'all_recipes': all_recipes,
+            'gallery_images': GalleryImage.objects.all()[:8],
+            'slides': Slide.objects.all(),
+            'context': context
+        })
     except DatabaseError as e:
         return HttpResponseServerError(f"Database error: {str(e)}")
     except Exception as e:
@@ -57,13 +56,8 @@ def home(request):
 
 # Displays all recipes
 def recipes(request):
-
-    # Getting dish Types
-    dish_types = DishType.objects.all()
-
     try:
-        all_recipes = Recipe.objects.all().order_by('-date')
-        return render(request, "./portfolio/recipes.html", {"dish_types": dish_types})
+        return render(request, "./portfolio/recipes.html", {"dish_types": DishType.objects.all()})
     except DatabaseError as e:
         return HttpResponseServerError(f"Database error: {str(e)}")
     except Exception as e:
@@ -74,10 +68,7 @@ def recipes(request):
 def dish_type_recipes(request, dish_type_slug):
     try:
         dish_type = DishType.objects.get(slug=str(dish_type_slug))
-        recipe_list = Recipe.objects.filter(
-            dish_type_id=dish_type.id).order_by('-date')
-
-        # Paginate the recipe list
+        recipe_list = Recipe.objects.filter(dish_type_id=dish_type.id).order_by('-date')
         paginator = Paginator(recipe_list, 12)  # Show 12 recipes per page
         page = request.GET.get('page')
 
@@ -121,3 +112,19 @@ def recipe_detail(request, slug):
         return HttpResponseServerError(f"Database error: {str(e)}")
     except Exception as e:
         return HttpResponseServerError(f"An unexpected error occurred: {str(e)}")
+    
+
+def service_detail(request, slug):
+    service_templates = {
+        'cours-de-cuisine': "portfolio/services/service_cours_de_cuisine.html",
+        'team-building-cuisine': "portfolio/services/service_team_building_cuisine.html",
+        'atelier-cuisine-enfants': "portfolio/services/service_atelier_cuisine_enfants.html"
+    }
+
+    template = service_templates.get(slug)
+    if not template:
+        raise Http404()
+    
+    return render(request, template)
+
+
