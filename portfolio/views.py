@@ -1,6 +1,5 @@
 from django.shortcuts import render
-from django.http import Http404, HttpResponseServerError
-from datetime import date
+from django.http import Http404, HttpResponseServerError, HttpResponse
 from portfolio.models.recipe import Recipe
 from portfolio.models.gallery_image import GalleryImage
 from portfolio.models.slide import Slide
@@ -8,6 +7,10 @@ from portfolio.models.dish_type import DishType
 from django.db import DatabaseError
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.mail import send_mail
+from django.conf import settings
+from portfolio.forms.contact_form import ContactForm
+from django.views.generic.edit import FormView
 
 # Create your views here.
 
@@ -130,7 +133,33 @@ def service_detail(request, slug):
 def about(request):
     return render(request, "./portfolio/about.html")
 
-def contact(request):
-    return render(request, "./portfolio/contact.html")
 
+
+
+class ContactFormView(FormView):
+    template_name = './portfolio/contact.html'  # your template name
+    form_class = ContactForm  # the form class
+    success_url = '/'  # Redirect to home or any page after success
+
+    def form_valid(self, form):
+        # Get the form data
+        first_name = form.cleaned_data['first_name']
+        last_name = form.cleaned_data['last_name']
+        email = form.cleaned_data['email']
+        phone = form.cleaned_data['phone']
+        message = form.cleaned_data['message']
+
+        # Prepare email content
+        subject = f"Message from {first_name} {last_name}"
+        body = f"Name: {first_name} {last_name}\nEmail: {email}\nPhone: {phone}\n\nMessage:\n{message}"
+        from_email = settings.DEFAULT_FROM_EMAIL  # or any other email configured in settings
+        recipient_list = ['meeriamzouein@gmail.com']  # replace with your email address
+
+        # Send email
+        send_mail(subject, body, from_email, recipient_list)
+
+        # Call parent method to handle the redirect to success_url
+        return super().form_valid(form)
+    
+    
 

@@ -57,34 +57,45 @@
           </div><!-- /.row -->
         </div><!-- /.col-lg-6 -->
         <div class="col-sm-12 col-md-12 col-lg-6">
-          <form>
-            <div class="row">
-              <div class="col-sm-6 col-md-6 col-lg-6">
-                <div class="form-group"><input type="text" class="form-control" placeholder="First Name:"></div>
-              </div><!-- /.col-lg-6 -->
-              <div class="col-sm-6 col-md-6 col-lg-6">
-                <div class="form-group"><input type="text" class="form-control" placeholder="First Name:"></div>
-              </div><!-- /.col-lg-6 -->
-            </div><!-- /.row -->
-            <div class="row">
-              <div class="col-sm-6 col-md-6 col-lg-6">
-                <div class="form-group"><input type="email" class="form-control" placeholder="Email:"></div>
-              </div><!-- /.col-lg-6 -->
-              <div class="col-sm-6 col-md-6 col-lg-6">
-                <div class="form-group"><input type="text" class="form-control" placeholder="Phone:"></div>
-              </div><!-- /.col-lg-6 -->
-            </div><!-- /.row -->
-            <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group mb-30"><textarea class="form-control" placeholder="Message"></textarea></div>
-              </div><!-- /.col-lg-12 -->
-            </div><!-- /.row -->
-            <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <button type="submit" class="btn btn__primary btn__block">Send Message</button>
-              </div><!-- /.col-lg-12 -->
-            </div><!-- /.row -->
-          </form>
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <div class="form-group">
+                            {{ form.first_name }}
+                        </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <div class="form-group">
+                            {{ form.last_name }}
+                        </div>
+                    </div><!-- /.col-lg-6 -->
+                </div><!-- /.row -->
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <div class="form-group">
+                            {{ form.email }}
+                        </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <div class="form-group">
+                            {{ form.phone }}
+                        </div>
+                    </div><!-- /.col-lg-6 -->
+                </div><!-- /.row -->
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group mb-30">
+                            {{ form.message }}
+                        </div>
+                    </div><!-- /.col-lg-12 -->
+                </div><!-- /.row -->
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <button type="submit" class="btn btn__primary btn__block">Send Message</button>
+                    </div><!-- /.col-lg-12 -->
+                </div><!-- /.row -->
+            </form>            
         </div><!-- /.col-lg-6 -->
       </div><!-- /.row -->
     </div><!-- /.container -->

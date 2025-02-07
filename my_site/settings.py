@@ -156,6 +156,15 @@ AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_PORT = 2525
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = '210e7cb4f9e3df'  # Your Mailtrap username
+EMAIL_HOST_PASSWORD = '80838165f148c7'  # Your Mailtrap password
+DEFAULT_FROM_EMAIL = 'machkar89@gmail.com'  # Your email address
+
+
 
 # Media file settings
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
