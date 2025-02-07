@@ -130,4 +130,7 @@ def service_detail(request, slug):
 def about(request):
     return render(request, "./portfolio/about.html")
 
+def contact(request):
+    return render(request, "./portfolio/contact.html")
+
 
