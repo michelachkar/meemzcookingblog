@@ -10,7 +10,7 @@ from portfolio.models.tag import Tag
 from datetime import date
 
 
-class RecipesIntegrationTests(TestCase):
+class RecipesViewTests(TestCase):
     def setUp(self):
         """Set up the necessary objects for testing."""
         self.client = Client()

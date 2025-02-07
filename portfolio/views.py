@@ -127,4 +127,7 @@ def service_detail(request, slug):
     
     return render(request, template)
 
+def about(request):
+    return render(request, "./portfolio/about.html")
+
 

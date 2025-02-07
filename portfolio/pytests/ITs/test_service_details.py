@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-class ServiceDetailTests(TestCase):
+class ServiceDetailViewTests(TestCase):
     # Test that valid service slugs return a 200 response and the correct template
     def test_valid_service_detail_views(self):
             valid_slugs = [
