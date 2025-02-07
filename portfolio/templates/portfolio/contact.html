@@ -59,15 +59,30 @@
         <div class="col-sm-12 col-md-12 col-lg-6">
             <form method="post">
                 {% csrf_token %}
+
                 <div class="row">
                     <div class="col-sm-6 col-md-6 col-lg-6">
                         <div class="form-group">
                             {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <ul class="errorlist">
+                                    {% for error in form.first_name.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                         </div>
                     </div><!-- /.col-lg-6 -->
                     <div class="col-sm-6 col-md-6 col-lg-6">
                         <div class="form-group">
                             {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <ul class="errorlist">
+                                    {% for error in form.last_name.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                         </div>
                     </div><!-- /.col-lg-6 -->
                 </div><!-- /.row -->
@@ -75,11 +90,25 @@
                     <div class="col-sm-6 col-md-6 col-lg-6">
                         <div class="form-group">
                             {{ form.email }}
+                            {% if form.email.errors %}
+                                <ul class="errorlist">
+                                    {% for error in form.email.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                         </div>
                     </div><!-- /.col-lg-6 -->
                     <div class="col-sm-6 col-md-6 col-lg-6">
                         <div class="form-group">
                             {{ form.phone }}
+                            {% if form.phone.errors %}
+                                <ul class="errorlist">
+                                    {% for error in form.phone.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                         </div>
                     </div><!-- /.col-lg-6 -->
                 </div><!-- /.row -->
@@ -87,6 +116,13 @@
                     <div class="col-sm-12 col-md-12 col-lg-12">
                         <div class="form-group mb-30">
                             {{ form.message }}
+                            {% if form.message.errors %}
+                                <ul class="errorlist">
+                                    {% for error in form.message.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                         </div>
                     </div><!-- /.col-lg-12 -->
                 </div><!-- /.row -->

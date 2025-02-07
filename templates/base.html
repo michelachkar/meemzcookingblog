@@ -33,10 +33,12 @@
           <div class="collapse navbar-collapse" id="mainNavigation">
             <ul class="navbar-nav ml-auto">
               <li class="nav__item">
-                <a href="{% url 'home' %}" class="nav__item-link active">Accueil</a>
+                {% url 'home' as home_url %}
+                <a href="{{ home_url }}" class="nav__item-link {% if request.path == home_url %}active{% endif %}">Accueil</a>
               </li><!-- /.nav-item -->
               <li class="nav__item with-dropdown">
-                <a href="{% url 'recipes' %}" class="dropdown-toggle nav__item-link">Recettes</a>
+                {% url 'recipes' as recipes_url %}
+                <a href="{{ recipes_url }}" class="dropdown-toggle nav__item-link {% if request.path == recipes_url %} active {% endif %}">Recettes</a>
                 <ul class="dropdown-menu">
                   {% for dish_type in menu_dish_types %}
                   <li class="nav__item"><a href="{% url 'recipes-dish-type' dish_type.slug %}" class="nav__item-link">{{dish_type.name}}</a></li>
@@ -45,21 +47,26 @@
                 </ul><!-- /.dropdown-menu -->
               </li><!-- /.nav-item -->
               <li class="nav__item with-dropdown">
-                <a href="#" data-toggle="dropdown" class="dropdown-toggle nav__item-link">Nos ateliers de cuisine</a>
+                {% url 'service_detail' 'cours-de-cuisine' as cours_cuisine_url %}
+                {% url 'service_detail' 'team-building-cuisine' as team_building_cuisine_url %}
+                {% url 'service_detail' 'atelier-cuisine-enfants' as atelier_cuisine_url %}
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle nav__item-link {% if request.path == cours_cuisine_url or request.path == team_building_cuisine_url or request.path == atelier_cuisine_url %} active {% endif %}">Nos ateliers de cuisine</a>
                 <ul class="dropdown-menu">
-                  <li class="nav__item"><a href="{% url 'service_detail' 'cours-de-cuisine' %}" class="nav__item-link">Cours de cuisine</a></li>
+                  <li class="nav__item"><a href="{{ cours_cuisine_url }}" class="nav__item-link">Cours de cuisine</a></li>
                   <!-- /.nav-item -->
-                  <li class="nav__item"><a href="{% url 'service_detail' 'team-building-cuisine' %}" class="nav__item-link">Team building cuisine</a></li>
+                  <li class="nav__item"><a href="{{ team_building_cuisine_url }}" class="nav__item-link">Team building cuisine</a></li>
                   <!-- /.nav-item -->
-                  <li class="nav__item"><a href="{% url 'service_detail' 'atelier-cuisine-enfants' %}" class="nav__item-link">Atelier cuisine enfants</a></li>
+                  <li class="nav__item"><a href="{{ atelier_cuisine_url }}" class="nav__item-link">Atelier cuisine enfants</a></li>
                   <!-- /.nav-item -->
                 </ul><!-- /.dropdown-menu -->
               </li><!-- /.nav-item -->
               <li class="nav__item">
-                <a href="{% url 'about' %}" class="nav__item-link">À propos</a>
+                {% url 'about' as about_url %}
+                <a href="{{ about_url }}" class="nav__item-link {% if request.path == about_url %} active {% endif %}">À propos</a>
               </li><!-- /.nav-item -->
               <li class="nav__item">
-                <a href="{% url 'contact' %}" class="nav__item-link">Contact</a>
+                {% url 'contact' as contact_url %}
+                <a href="{{ contact_url }}" class="nav__item-link {% if request.path == contact_url %} active {% endif %}">Contact</a>
               </li><!-- /.nav-item -->
               <!-- /.nav-item -->
             </ul><!-- /.navbar-nav -->
@@ -67,9 +74,6 @@
           <div class="navbar-actions-wrap">
             <div class="navbar-actions d-flex align-items-center">
               <a href="#" class="navbar__action-btn search-popup-trigger"><i class="fa fa-search"></i></a>
-              <a href="reservation.html"
-                class="navbar__action-btn navbar__action-btn-reserve btn btn__primary">Devis Gratuit</a>
-              <ul class="social__icons">
                 <li><a href="#"><i class="fa fa-instagram"></i></a></li>
               </ul><!-- /.social__icons -->
             </div><!-- /.navbar-actions -->

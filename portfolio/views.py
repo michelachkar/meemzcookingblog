@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import Http404, HttpResponseServerError, HttpResponse
+from django.http import Http404, HttpResponseServerError
 from portfolio.models.recipe import Recipe
 from portfolio.models.gallery_image import GalleryImage
 from portfolio.models.slide import Slide
@@ -134,8 +134,6 @@ def about(request):
     return render(request, "./portfolio/about.html")
 
 
-
-
 class ContactFormView(FormView):
     template_name = './portfolio/contact.html'  # your template name
     form_class = ContactForm  # the form class
@@ -160,6 +158,8 @@ class ContactFormView(FormView):
 
         # Call parent method to handle the redirect to success_url
         return super().form_valid(form)
+    
+
     
     
 
