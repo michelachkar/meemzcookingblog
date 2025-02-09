@@ -59,6 +59,7 @@ jobs:
       - name: Run Migrations
         run: python manage.py migrate
         env: 
+          SECRET_KEY: django-insecure-8elby-6f67+t@y-9oy-zwod668xu=l$bd@r4z6xxlip$a08ark
           DB_ENGINE: django.db.backends.mysql
           DB_NAME: cooking_blog_database
           DB_USER: root
@@ -68,11 +69,16 @@ jobs:
 
       - name: Run Tests
         env:
+          SECRET_KEY: django-insecure-8elby-6f67+t@y-9oy-zwod668xu=l$bd@r4z6xxlip$a08ark
           DB_ENGINE: django.db.backends.mysql
           DB_NAME: cooking_blog_database
           DB_USER: root
           DB_PASSWORD: ''
           DB_HOST: 127.0.0.1
           DB_PORT: 3306
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_STORAGE_BUCKET_NAME: ${{ secrets.AWS_STORAGE_BUCKET_NAME }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           python manage.py test
