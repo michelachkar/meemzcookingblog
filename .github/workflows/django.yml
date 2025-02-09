@@ -39,23 +39,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install --no-cache-dir -r requirements.txt
 
-      - name: Run Migrations
-        run: python manage.py migrate
-        env: 
-          SECRET_KEY: django-insecure-8elby-6f67+t@y-9oy-zwod668xu=l$bd@r4z6xxlip$a08ark
-          DB_ENGINE: django.db.backends.mysql
-          DB_NAME: cooking_blog_database
-          DB_USER: root
-          DB_PASSWORD: ''
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
-          EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
-          EMAIL_USE_TLS: ${{ secrets.EMAIL_USE_TLS }}
-          EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
-          EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
-          DEFAULT_FROM_EMAIL: ${{ secrets.DEFAULT_FROM_EMAIL }}
-
       - name: Run Tests
         env:
           SECRET_KEY: django-insecure-8elby-6f67+t@y-9oy-zwod668xu=l$bd@r4z6xxlip$a08ark
