@@ -68,6 +68,7 @@ jobs:
 
       - name: Run Tests
         env:
+          SECRET_KEY: django-insecure-8elby-6f67+t@y-9oy-zwod668xu=l$bd@r4z6xxlip$a08ark
           DB_ENGINE: django.db.backends.mysql
           DB_NAME: cooking_blog_database
           DB_USER: root
