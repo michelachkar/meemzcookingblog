@@ -32,5 +32,6 @@ jobs:
           DB_USER: root
           DB_PASSWORD: ''
           DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
+          DJANGO_SECRET_KEY: django-insecure-8elby-6f67+t@y-9oy-zwod668xu=l$bd@r4z6xxlip$a08ark
         run: |
           python manage.py test
