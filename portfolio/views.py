@@ -146,10 +146,11 @@ class ContactFormView(FormView):
         email = form.cleaned_data['email']
         phone = form.cleaned_data['phone']
         message = form.cleaned_data['message']
+        service = form.cleaned_data['service']
 
         # Prepare email content
         subject = f"Message from {first_name} {last_name}"
-        body = f"Name: {first_name} {last_name}\nEmail: {email}\nPhone: {phone}\n\nMessage:\n{message}"
+        body = f"Name: {first_name} {last_name}\nEmail: {email}\nPhone: {phone}\n\nMessage:\n{message}\n\nService:\n{service}"
         from_email = settings.DEFAULT_FROM_EMAIL  # or any other email configured in settings
         recipient_list = ['meeriamzouein@gmail.com']  # replace with your email address
 
