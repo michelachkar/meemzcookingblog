@@ -28,12 +28,12 @@ jobs:
 
       name: Set up Database Environment Variables
         env:
-          DB_ENGINE: 'django.db.backends.mysql'  # Or mysql, postgresql
-          DB_NAME: 'cooking_blog_database'
-          DB_USER: 'root'
-          DB_PASSWORD: ''
+          DB_ENGINE: django.db.backends.mysql
+          DB_NAME: cooking_blog_database
+          DB_USER: root
+          DB_PASSWORD: 
           DB_HOST: localhost 127.0.0.1 [::1]
-          DB_PORT: '3306'
+          DB_PORT: 3306
         run: echo "Database environment variables set"
 
 
