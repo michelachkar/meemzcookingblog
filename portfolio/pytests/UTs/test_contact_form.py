@@ -8,6 +8,7 @@ class ContactFormTest(TestCase):
             'last_name': 'Doe',
             'email': 'john.doe@example.com',
             'phone': '1234567890',
+            'service': 'support',
             'message': 'This is a test message.'
         }
         form = ContactForm(data=form_data)
@@ -19,6 +20,7 @@ class ContactFormTest(TestCase):
             'first_name': 'John',
             'last_name': 'Doe',
             'phone': '1234567890',
+            'service': 'support',
             'message': 'This is a test message.'
         }
         form = ContactForm(data=form_data)
@@ -83,6 +85,7 @@ class ContactFormTest(TestCase):
             'last_name': 'Doe',
             'email': 'john.doe@example.com',
             'phone': '1234567890',  # Valid phone
+            'service': 'support',
             'message': 'This is a test message.'
         }
         form = ContactForm(data=form_data)

@@ -11,6 +11,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from portfolio.forms.contact_form import ContactForm
 from django.views.generic.edit import FormView
+import smtplib
 
 # Create your views here.
 
@@ -150,12 +151,18 @@ class ContactFormView(FormView):
 
         # Prepare email content
         subject = f"Message from {first_name} {last_name}"
-        body = f"Name: {first_name} {last_name}\nEmail: {email}\nPhone: {phone}\n\nMessage:\n{message}\n\nService:\n{service}"
-        from_email = settings.DEFAULT_FROM_EMAIL  # or any other email configured in settings
-        recipient_list = ['meeriamzouein@gmail.com']  # replace with your email address
+        body = f"Name: {first_name} {last_name}\nEmail: {email}\nPhone: {phone}\n\nService: {service}\n\nMessage:\n{message}"
+        from_email = settings.DEFAULT_FROM_EMAIL  # Email configured in settings
+        recipient_list = ['meeriamzouein@gmail.com']  # Replace with your actual recipient email
 
-        # Send email
-        send_mail(subject, body, from_email, recipient_list)
+        # Send email and handle potential exceptions
+        try:
+            send_mail(subject, body, from_email, recipient_list)
+        except Exception as e:
+            # Optionally log the error or handle it
+            print(f"Error sending email: {e}")
+            # You can either handle the error gracefully here or re-raise it if needed
+            raise
 
         # Call parent method to handle the redirect to success_url
         return super().form_valid(form)

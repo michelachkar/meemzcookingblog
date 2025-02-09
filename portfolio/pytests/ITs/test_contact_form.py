@@ -7,124 +7,146 @@ from unittest.mock import patch
 class ContactFormViewTest(TestCase):
 
     def setUp(self):
-        # Set up any necessary data for the test
+        # Set up necessary URL for the form view
         self.url = reverse('contact')  # Replace with the correct URL name for the form view
 
     def test_form_view_get(self):
+        # Test for GET request, ensuring form is loaded correctly
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, './portfolio/contact.html')
         self.assertIsInstance(response.context['form'], ContactForm)
 
-    @patch('portfolio.views.send_mail')  # Mock the send_mail function to not actually send emails during testing
+    @patch('portfolio.views.send_mail')  # Mock the send_mail function to prevent actual email sending
     def test_form_view_post_valid_data(self, mock_send_mail):
+        # Test POST with valid data and verify the email sending
         form_data = {
             'first_name': 'John',
             'last_name': 'Doe',
             'email': 'john.doe@example.com',
+            'service': 'general',  # Ensure valid service choice
             'phone': '1234567890',
             'message': 'This is a test message.'
         }
         response = self.client.post(self.url, form_data)
 
-        # Check if email is sent
-        mock_send_mail.assert_called_once()
-        subject = f"Message from John Doe"
-        body = "Name: John Doe\nEmail: john.doe@example.com\nPhone: 1234567890\n\nMessage:\nThis is a test message."
-        mock_send_mail.assert_called_with(subject, body, settings.DEFAULT_FROM_EMAIL, ['meeriamzouein@gmail.com'])
+        # Ensure email was sent with correct data
+        mock_send_mail.assert_called_once_with(
+            f"Message from John Doe", 
+            "Name: John Doe\nEmail: john.doe@example.com\nPhone: 1234567890\n\nService: general\n\nMessage:\nThis is a test message.",
+            settings.DEFAULT_FROM_EMAIL, 
+            ['meeriamzouein@gmail.com']
+        )
 
-        # Check the redirect after form submission
+        # Ensure the user is redirected after successful form submission
         self.assertRedirects(response, '/')
 
-    def test_form_view_post_invalid_data(self):
-        # Simulate invalid form data
+    @patch('portfolio.views.send_mail')  # Mock the send_mail function
+    def test_form_view_post_invalid_data(self, mock_send_mail):
+        # Test POST with invalid data (missing required fields, invalid email)
         form_data = {
-            'first_name': '',
+            'first_name': '',  # Missing first name
             'last_name': 'Doe',
-            'email': 'invalid_email',
+            'email': 'invalid_email',  # Invalid email format
+            'service': 'general', 
             'phone': '1234567890',
             'message': 'This is a test message.'
         }
         response = self.client.post(self.url, form_data)
 
-        # Ensure the form is present in the context
+        # Ensure form is invalid and appropriate errors are shown
         form = response.context['form']
-
-        # Check if the form is not valid
         self.assertFalse(form.is_valid())
-
-        # Check for specific form errors
         self.assertIn('first_name', form.errors)
         self.assertIn('email', form.errors)
-
-        # Check the specific error messages
         self.assertEqual(form.errors['first_name'], ['This field is required.'])
         self.assertEqual(form.errors['email'], ['Enter a valid email address.'])
 
-        # Ensure the status code is 200 (page is rendered with errors)
+        # Check if the page is rendered again with the form errors
         self.assertEqual(response.status_code, 200)
 
     @patch('portfolio.views.send_mail')  # Mock the send_mail function
     def test_form_view_sends_email_on_valid_submission(self, mock_send_mail):
+        # Test POST with valid data and check email sending
         form_data = {
             'first_name': 'Jane',
             'last_name': 'Doe',
             'email': 'jane.doe@example.com',
             'phone': '0987654321',
-            'message': 'Another test message.'
+            'message': 'Another test message.',
+            'service': 'support'
         }
         response = self.client.post(self.url, form_data)
 
-        # Verify the email was sent
-        mock_send_mail.assert_called_once()
-        subject = f"Message from Jane Doe"
-        body = "Name: Jane Doe\nEmail: jane.doe@example.com\nPhone: 0987654321\n\nMessage:\nAnother test message."
-        mock_send_mail.assert_called_with(subject, body, settings.DEFAULT_FROM_EMAIL, ['meeriamzouein@gmail.com'])
+        # Verify the email was sent with correct data
+        mock_send_mail.assert_called_once_with(
+            f"Message from Jane Doe", 
+            "Name: Jane Doe\nEmail: jane.doe@example.com\nPhone: 0987654321\n\nService: support\n\nMessage:\nAnother test message.",
+            settings.DEFAULT_FROM_EMAIL, 
+            ['meeriamzouein@gmail.com']
+        )
 
-        # Ensure the user is redirected to the success page
+        # Ensure the user is redirected after form submission
         self.assertRedirects(response, '/')
 
     def test_form_view_post_missing_required_fields(self):
-        # Simulate missing required fields
+        # Test POST with missing required fields
         form_data = {
-            'first_name': '',
-            'last_name': '',
+            'first_name': '',  # Missing first name
+            'last_name': '',  # Missing last name
             'email': 'missing.fields@example.com',
             'phone': '1234567890',
-            'message': ''
+            'message': ''  # Missing message
         }
         response = self.client.post(self.url, form_data)
 
-        # Ensure form is invalid
+        # Ensure form is invalid and appropriate errors are shown
         form = response.context['form']
         self.assertFalse(form.is_valid())
-
-        # Check for missing required field errors
         self.assertIn('first_name', form.errors)
         self.assertIn('last_name', form.errors)
         self.assertIn('message', form.errors)
 
-        # Ensure status code is 200
+        # Check that the page renders with status code 200
         self.assertEqual(response.status_code, 200)
 
-    def test_form_view_post_email_with_invalid_format(self):
-        # Invalid email format
+    def test_form_view_post_invalid_email_format(self):
+        # Test POST with invalid email format
         form_data = {
             'first_name': 'Alice',
             'last_name': 'Smith',
             'email': 'invalid-email',  # Invalid email format
             'phone': '9876543210',
-            'message': 'Message with invalid email.'
+            'message': 'Message with invalid email.',
+            'service': 'feedback'
         }
         response = self.client.post(self.url, form_data)
 
-        # Ensure form is invalid
+        # Ensure form is invalid and appropriate errors are shown
         form = response.context['form']
         self.assertFalse(form.is_valid())
-
-        # Check email field error
         self.assertIn('email', form.errors)
         self.assertEqual(form.errors['email'], ['Enter a valid email address.'])
 
-        # Ensure status code is 200
+        # Ensure page is rendered again with errors and status code 200
+        self.assertEqual(response.status_code, 200)
+
+    def test_form_view_post_invalid_service_choice(self):
+        # Test POST with an invalid service choice (not in the predefined options)
+        form_data = {
+            'first_name': 'Invalid',
+            'last_name': 'Choice',
+            'email': 'invalid.choice@example.com',
+            'phone': '1234567890',
+            'message': 'Message with invalid service choice.',
+            'service': 'nonexistent'  # Invalid service option
+        }
+        response = self.client.post(self.url, form_data)
+
+        # Ensure form is invalid due to invalid service choice
+        form = response.context['form']
+        self.assertFalse(form.is_valid())
+        self.assertIn('service', form.errors)
+
+        # Ensure the page renders again with the errors
         self.assertEqual(response.status_code, 200)
