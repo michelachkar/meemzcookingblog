@@ -27,6 +27,24 @@ jobs:
           --health-retries=3
 
     steps:
+      - name: Check if DB_PASSWORD is loaded
+        run: |
+          echo "Checking if DB_PASSWORD is loaded..."
+          if [ -z "$DB_PASSWORD" ]; then
+            echo "DB_PASSWORD is NOT set!"
+          else
+            echo $DB_PASSWORD
+          fi
+      
+      - name: Check if DB_NAME is loaded
+        run: |
+          echo "Checking if DB_NAME is loaded..."
+          if [ -z "$DB_NAME" ]; then
+            echo "DB_NAME is NOT set!"
+          else
+            echo $DB_NAME
+          fi
+
       - name: Checkout Code
         uses: actions/checkout@v4
 
