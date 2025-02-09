@@ -19,7 +19,7 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: cooking_blog_database
-        ports: 3306
+        ports: ['3306:3306']
 
     steps:
       - name: Checkout Code
@@ -28,7 +28,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.11
+          python-version: [3.11]
 
       - name: Install Dependencies
         run: |
