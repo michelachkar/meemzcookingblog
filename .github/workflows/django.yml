@@ -39,23 +39,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install --no-cache-dir -r requirements.txt
 
-      - name: Debug MySQL Logs
-        run: docker logs $(docker ps -q --filter "ancestor=mysql:9.2")
-
-      - name: Wait for MySQL
-        run: |
-          for i in {30..0}; do
-            if mysqladmin ping -h"127.0.0.1" -u root --password='' --silent; then
-              echo "MySQL is ready!"
-              exit 0
-            fi
-            echo "Waiting for MySQL to be ready... ($i)"
-            sleep 2
-          done
-          echo "MySQL did not start in time. Exiting..."
-          exit 1
-
-
       - name: Run Migrations
         run: python manage.py migrate
         env: 
