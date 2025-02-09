@@ -29,11 +29,8 @@ jobs:
       - name: Run Tests
         env:
           DB_NAME: cooking_blog_database
-          DB_USER: userdb
-          DB_PASSWORD: password
+          DB_USER: root
+          DB_PASSWORD: ''
           DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
-          DEBUG_MODE: False
-          TIME_ZONE: Africa/Bangui
-          CACHE_KEY_PREFIX: Halo
         run: |
           python manage.py test
