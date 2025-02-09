@@ -26,13 +26,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install --no-cache-dir -r requirements.txt
 
-      - name: Run Tests
+      name: Set up Database Environment Variables
         env:
-          DB_NAME: cooking_blog_database
-          DB_USER: root
+          DB_ENGINE: 'django.db.backends.mysql'  # Or mysql, postgresql
+          DB_NAME: 'cooking_blog_database'
+          DB_USER: 'root'
           DB_PASSWORD: ''
-          DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
-          DJANGO_SECRET_KEY: django-insecure-8elby-6f67+t@y-9oy-zwod668xu=l$bd@r4z6xxlip$a08ark
-          ENGINE: django.db.backends.mysql
+          DB_HOST: localhost 127.0.0.1 [::1]
+          DB_PORT: '3306'
+        run: echo "Database environment variables set"
+
+
+      - name: Run Tests
         run: |
           python manage.py test
