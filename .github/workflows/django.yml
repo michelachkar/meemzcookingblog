@@ -43,19 +43,19 @@ jobs:
         run: python manage.py migrate
         env: 
           DB_ENGINE: django.db.backends.mysql
-            DB_NAME: cooking_blog_database
-            DB_USER: root
-            DB_PASSWORD: ''
-            DB_HOST: 127.0.0.1
-            DB_PORT: 3306
+          DB_NAME: cooking_blog_database
+          DB_USER: root
+          DB_PASSWORD: ''
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
 
       - name: Run Tests
         env:
-            DB_ENGINE: django.db.backends.mysql
-            DB_NAME: cooking_blog_database
-            DB_USER: root
-            DB_PASSWORD: ''
-            DB_HOST: 127.0.0.1
-            DB_PORT: 3306
+          DB_ENGINE: django.db.backends.mysql
+          DB_NAME: cooking_blog_database
+          DB_USER: root
+          DB_PASSWORD: ''
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
         run: |
           python manage.py test
