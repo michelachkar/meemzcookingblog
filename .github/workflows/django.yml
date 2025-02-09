@@ -27,5 +27,13 @@ jobs:
           pip install --no-cache-dir -r requirements.txt
 
       - name: Run Tests
+        env:
+          DB_NAME: cooking_blog_database
+          DB_USER: userdb
+          DB_PASSWORD: password
+          DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
+          DEBUG_MODE: False
+          TIME_ZONE: Africa/Bangui
+          CACHE_KEY_PREFIX: Halo
         run: |
           python manage.py test
