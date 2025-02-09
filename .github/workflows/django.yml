@@ -9,8 +9,21 @@ on:
       - main
 
 jobs:
-  build:
+  test:
+
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: 3.11
+
+    services:
+      mysql:
+        image: mysql:9.2
+        env:
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_DATABASE: cooking_blog_database
+        ports: 3306
 
     steps:
       - name: Checkout Code
@@ -26,13 +39,23 @@ jobs:
           python -m pip install --upgrade pip
           pip install --no-cache-dir -r requirements.txt
 
+      - name: Run Migrations
+        run: python manage.py migrate
+        env: 
+          DB_ENGINE: django.db.backends.mysql
+            DB_NAME: cooking_blog_database
+            DB_USER: root
+            DB_PASSWORD: ''
+            DB_HOST: 127.0.0.1
+            DB_PORT: 3306
+
       - name: Run Tests
         env:
             DB_ENGINE: django.db.backends.mysql
             DB_NAME: cooking_blog_database
             DB_USER: root
             DB_PASSWORD: ''
-            DB_HOST: localhost
+            DB_HOST: 127.0.0.1
             DB_PORT: 3306
         run: |
           python manage.py test
