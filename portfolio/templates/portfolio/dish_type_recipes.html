@@ -58,7 +58,7 @@
                     <li><a href="?page=1">&laquo; First</a></li>
                     <li><a href="?page={{ recipe_list.previous_page_number }}">Prev</a></li>
                   {% else %}
-                    <li class="disabled"><a href="#">« First</a></li>
+                    <li class="disabled"><a href="#">«</a></li>
                     <li class="disabled"><a href="#">Prev</a></li>
                   {% endif %}
 
@@ -69,7 +69,7 @@
                     <li><a href="?page={{ recipe_list.paginator.num_pages }}">Last &raquo;</a></li>
                   {% else %}
                     <li class="disabled"><a href="#">Next</a></li>
-                    <li class="disabled"><a href="#">Last »</a></li>
+                    <li class="disabled"><a href="#">»</a></li>
                   {% endif %}
                 </ul>
               </nav>
