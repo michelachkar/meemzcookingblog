@@ -73,6 +73,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "portfolio.context_processors.menu_dish_types",
                 "portfolio.context_processors.aws_settings",
+                "portfolio.context_processors.search_form",
             ],
         },
     },

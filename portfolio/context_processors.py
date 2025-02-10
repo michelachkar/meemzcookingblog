@@ -1,6 +1,7 @@
 from portfolio.models.dish_type import DishType
 from django.core.cache import cache
 from django.conf import settings
+from portfolio.forms.search_form import SearchForm
 
 
 def menu_dish_types(request):
@@ -16,3 +17,6 @@ def aws_settings(request):
     return {
         'AWS_S3_CUSTOM_DOMAIN': settings.AWS_S3_CUSTOM_DOMAIN
     }
+
+def search_form(request):
+    return {'search_form': SearchForm()} 

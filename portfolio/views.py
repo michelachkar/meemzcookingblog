@@ -10,14 +10,12 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
 from django.conf import settings
 from portfolio.forms.contact_form import ContactForm
+from portfolio.forms.search_form import SearchForm
 from django.views.generic.edit import FormView
-import smtplib
+from django.db.models import Q
 
-# Create your views here.
 
 # Displays home page
-
-
 def home(request):
     try:
         # Getting all recipes
@@ -135,6 +133,36 @@ def about(request):
     return render(request, "./portfolio/about.html")
 
 
+
+class RecipeSearchView(FormView):
+    template_name = './portfolio/search_results.html'  # Template for search results
+    form_class = SearchForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.get_form()
+        query = request.GET.get('search', '')
+        results = None
+
+        if query:
+            results = Recipe.objects.filter(Q(title__icontains=query) | Q(dish_type__name__icontains=query)).select_related(
+                "dish_type", "main_ingredient", "cuisine_type", "difficulty_level"
+            ).prefetch_related("tags", "event_type")  # Optimize DB queries
+        else:
+            results = Recipe.objects.none()
+
+        paginator = Paginator(results, 12)  # Show 12 recipes per page
+        page = request.GET.get('page')
+
+        try:
+            results = paginator.page(page)
+        except PageNotAnInteger:
+            results = paginator.page(1)
+        except EmptyPage:
+            results = paginator.page(paginator.num_pages)
+
+        return render(request, self.template_name, {'form': form, 'results': results, 'query': query})
+
+
 class ContactFormView(FormView):
     template_name = './portfolio/contact.html'  # your template name
     form_class = ContactForm  # the form class
@@ -169,5 +197,7 @@ class ContactFormView(FormView):
     
 
     
+
+        
     
 

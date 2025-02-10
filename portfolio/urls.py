@@ -1,6 +1,6 @@
 from django.urls import path, include
 from . import views
-from .views import ContactFormView
+from .views import ContactFormView, RecipeSearchView
 
 
 urlpatterns = [
@@ -12,5 +12,8 @@ urlpatterns = [
     path("services/<slug:slug>", views.service_detail, name="service_detail"),
     path("a-propos", views.about, name="about"),
     path('contact', ContactFormView.as_view(), name='contact'),
+    path('search/', RecipeSearchView.as_view(), name='recipe_search'),
+
+
 
 ]
