@@ -12,16 +12,13 @@ django-js-asset==3.0.1
 django-storages==1.14.4
 jsonpointer==2.1
 matplotlib==3.9.2
-mysql-connector-python==9.2.0
 protobuf==4.25.3
 pyasn1-modules==0.2.8
-pyls-spyder==0.4.0
 PyMySQL==1.1.1
-PyQt5==5.15.10
-PyQtWebEngine==5.15.6
 s3transfer==0.11.2
 setuptools==75.1.0
 sqlparse==0.5.3
 wheel==0.44.0
 python-dotenv==1.0.1
 mysqlclient>=2.2.0
+gunicorn==21.2.0
