@@ -30,15 +30,6 @@ jobs:
           docker tag django-app-meemz-website:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
 
-      - name: Upload .env file to EC2
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
-          source: .env
-          target: /home/${{ secrets.EC2_USER }}/my_site/.env
-      
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
@@ -49,7 +40,4 @@ jobs:
             docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
             docker stop django-app-meemz-website || true
             docker rm django-app-meemz-website || true
-            docker run -d --name django-app-meemz-website \
-              -p 8000:8000 \
-              --env-file /home/${{ secrets.EC2_USER }}/my_site/.env \
-              ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
+            docker run -d --name django-app-meemz-website -p 8000:8000 --env-file /home/michel/.env ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
