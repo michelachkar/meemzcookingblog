@@ -76,27 +76,44 @@ jobs:
           echo "----------------------------"
 
           # Connect to EC2 and deploy
+          echo "----------------------------"
           echo "Starting deployment to EC2..."
+          echo "----------------------------"
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/aws_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            echo "----------------------------"
             echo "Logging into ECR from EC2"
+            echo "----------------------------"
             aws ecr get-login-password --region ${{ secrets.AWS_REGION_NAME }} | \
             docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
-            echo "JUMPJUMPJUMPJUMPJUMPJUMPJUMPJUMPJUMP"
             ls -la
-            cd ..
             echo "JUMPJUMPJUMPJUMPJUMPJUMPJUMPJUMPJUMP"
-            ls -la
+            echo "----------------------------"
             echo "ECR login successful"
+            echo "----------------------------"
 
+            echo "----------------------------"
             echo "Pulling Docker image from ECR"
+            echo "----------------------------"
             docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
+            echo "----------------------------"
             echo "Docker image pulled successfully"
+            echo "----------------------------"
+            ls -la
+            echo "JUMPJUMPJUMPJUMPJUMPJUMPJUMPJUMPJUMP"
 
+            echo "----------------------------"
             echo "Stopping and removing existing containers"
+            echo "----------------------------"
             docker-compose -f docker-compose.yml down
 
+            echo "----------------------------"
             echo "Starting the new containers"
+            echo "----------------------------"
             docker-compose -f docker-compose.yml up -d
+            echo "----------------------------"
             echo "Deployment completed successfully"
+            echo "----------------------------"
           EOF
+          echo "----------------------------"
           echo "Deployment to EC2 completed"
+          echo "----------------------------"
