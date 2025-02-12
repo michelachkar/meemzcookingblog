@@ -53,7 +53,7 @@ jobs:
           ssh-keyscan github.com >> ~/.ssh/known_hosts
 
           # Go to your app directory
-          cd /home/michel
+          cd michel
 
           # Pull the latest code from GitHub using SSH
           git pull origin main
