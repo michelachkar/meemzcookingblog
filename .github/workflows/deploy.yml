@@ -48,7 +48,7 @@ jobs:
             aws ecr get-login-password --region ${{ secrets.AWS_REGION_NAME }} | \
             docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
             docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
-            docker-compose down
-            docker-compose up -d
+            docker-compose -f /home/michel/docker-compose.yml down
+            docker-compose -f /home/michel/docker-compose.yml up -d
           EOF
 
