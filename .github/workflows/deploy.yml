@@ -40,4 +40,3 @@ jobs:
             docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
             docker stop django-app-meemz-website || true
             docker rm django-app-meemz-website || true
-            docker run -d --name django-app-meemz-website -p 8000:8000 --env-file .env ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
