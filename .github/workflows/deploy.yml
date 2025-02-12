@@ -12,8 +12,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        run: |
-          echo "Checking out the code from GitHub repository"
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -21,8 +19,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION_NAME }}
-        run: |
-          echo "Configured AWS credentials for region ${{ secrets.AWS_REGION_NAME }}"
 
       - name: Authenticate to AWS ECR
         id: login-ecr
