@@ -23,55 +23,57 @@ jobs:
       - name: Authenticate to AWS ECR
         id: login-ecr
         run: |
+          echo "----------------------------"
           echo "Authenticating to AWS ECR..."
+          echo "----------------------------"
           aws ecr get-login-password --region ${{ secrets.AWS_REGION_NAME }} | \
           docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
+          echo "----------------------------"
           echo "Authenticated to AWS ECR successfully"
+          echo "----------------------------"
 
       - name: Build & Push Docker Image
         env:
           ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
           IMAGE_TAG: latest
         run: |
+          echo "----------------------------"
           echo "Building Docker image..."
+          echo "----------------------------"
           docker build -t $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG .
+          echo "----------------------------"
           echo "Docker image built successfully"
+          echo "----------------------------"
           
+          echo "----------------------------"
           echo "Pushing Docker image to ECR..."
+          echo "----------------------------"
           docker push $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG
+          echo "----------------------------"
           echo "Docker image pushed successfully"
+          echo "----------------------------"
 
       - name: Deploy to EC2
         env:
           PRIVATE_KEY: ${{ secrets.EC2_KEY }}
           GITHUB_SSH_PRIVATE_KEY: ${{ secrets.GIT_PRIVATE_KEY }}
         run: |
-          echo "Setting up SSH keys for EC2 and GitHub..."
-
+          echo "----------------------------"
+          echo "Setting up SSH keys for EC2"
+          echo "----------------------------"
           # Create SSH key file for EC2
           mkdir -p ~/.ssh
           echo "$PRIVATE_KEY" | tr -d '\r' > ~/.ssh/aws_key.pem
           chmod 600 ~/.ssh/aws_key.pem
+          echo "----------------------------"
           echo "EC2 SSH key setup complete"
-
-          # Create SSH key file for GitHub
-          echo "$GITHUB_SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          echo "GitHub SSH key setup complete"
+          echo "----------------------------"
 
           # Set up known hosts to avoid SSH fingerprint issues
           ssh-keyscan github.com >> ~/.ssh/known_hosts
+          echo "----------------------------"
           echo "GitHub host key added to known hosts"
-
-          # Go to your app directory
-          ls -la
-          echo "Changing directory to /home/michel"
-          cd michel
-
-          # Pull the latest code from GitHub using SSH
-          echo "Pulling latest code from GitHub repository"
-          git pull origin main
-          echo "Latest code pulled successfully"
+          echo "----------------------------"
 
           # Connect to EC2 and deploy
           echo "Starting deployment to EC2..."
@@ -79,6 +81,11 @@ jobs:
             echo "Logging into ECR from EC2"
             aws ecr get-login-password --region ${{ secrets.AWS_REGION_NAME }} | \
             docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
+            echo "JUMPJUMPJUMPJUMPJUMPJUMPJUMPJUMPJUMP"
+            ls -la
+            cd ..
+            echo "JUMPJUMPJUMPJUMPJUMPJUMPJUMPJUMPJUMP"
+            ls -la
             echo "ECR login successful"
 
             echo "Pulling Docker image from ECR"
