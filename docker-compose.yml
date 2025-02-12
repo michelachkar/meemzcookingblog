@@ -27,9 +27,9 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .:/app
-      - static_volume:/app/staticfiles  
-    command: ["gunicorn", "--bind", "0.0.0.0:8000", "my_site.wsgi:application"]
+      - .:/app  # Mount your project directory into the container
+      - ./staticfiles:/app/staticfiles  # Serve static files from the container's staticfiles directory
+    command: ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
 
 volumes:
   mysql_data:

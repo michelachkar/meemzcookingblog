@@ -9,7 +9,6 @@ def menu_dish_types(request):
 
     if dish_types is None:  # If not cached, query DB
         dish_types = DishType.objects.all()
-        cache.set("menu_dish_types", dish_types, timeout=3600)  # Cache for 1 hour
 
     return {'menu_dish_types': dish_types}
 
