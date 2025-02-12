@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        run: |
+          echo "Checking out the code from GitHub repository"
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -19,51 +21,79 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION_NAME }}
+        run: |
+          echo "Configured AWS credentials for region ${{ secrets.AWS_REGION_NAME }}"
 
       - name: Authenticate to AWS ECR
         id: login-ecr
         run: |
+          echo "Authenticating to AWS ECR..."
           aws ecr get-login-password --region ${{ secrets.AWS_REGION_NAME }} | \
           docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
+          echo "Authenticated to AWS ECR successfully"
 
       - name: Build & Push Docker Image
         env:
           ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
           IMAGE_TAG: latest
         run: |
+          echo "Building Docker image..."
           docker build -t $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG .
+          echo "Docker image built successfully"
+          
+          echo "Pushing Docker image to ECR..."
           docker push $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG
+          echo "Docker image pushed successfully"
 
       - name: Deploy to EC2
         env:
           PRIVATE_KEY: ${{ secrets.EC2_KEY }}
           GITHUB_SSH_PRIVATE_KEY: ${{ secrets.GIT_PRIVATE_KEY }}
-
         run: |
-          # Create SSH key file
+          echo "Setting up SSH keys for EC2 and GitHub..."
+
+          # Create SSH key file for EC2
           mkdir -p ~/.ssh
           echo "$PRIVATE_KEY" | tr -d '\r' > ~/.ssh/aws_key.pem
           chmod 600 ~/.ssh/aws_key.pem
+          echo "EC2 SSH key setup complete"
 
-          # Create SSH key file for GitHub (use the private key for authentication)
+          # Create SSH key file for GitHub
           echo "$GITHUB_SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          echo "GitHub SSH key setup complete"
 
           # Set up known hosts to avoid SSH fingerprint issues
           ssh-keyscan github.com >> ~/.ssh/known_hosts
+          echo "GitHub host key added to known hosts"
 
           # Go to your app directory
+          ls -la
+          echo "Changing directory to /home/michel"
           cd michel
 
           # Pull the latest code from GitHub using SSH
+          echo "Pulling latest code from GitHub repository"
           git pull origin main
+          echo "Latest code pulled successfully"
 
           # Connect to EC2 and deploy
+          echo "Starting deployment to EC2..."
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/aws_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            echo "Logging into ECR from EC2"
             aws ecr get-login-password --region ${{ secrets.AWS_REGION_NAME }} | \
             docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
-            docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
-            docker-compose -f docker-compose.yml down
-            docker-compose -f docker-compose.yml up -d
-          EOF
+            echo "ECR login successful"
 
+            echo "Pulling Docker image from ECR"
+            docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
+            echo "Docker image pulled successfully"
+
+            echo "Stopping and removing existing containers"
+            docker-compose -f docker-compose.yml down
+
+            echo "Starting the new containers"
+            docker-compose -f docker-compose.yml up -d
+            echo "Deployment completed successfully"
+          EOF
+          echo "Deployment to EC2 completed"
