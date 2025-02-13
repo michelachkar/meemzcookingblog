@@ -33,6 +33,8 @@ COPY . .
 # Make sure entrypoint.sh has executable permissions
 RUN chmod +x /app/entrypoint.sh
 
+RUN python manage.py collectstatic --noinput
+
 # Expose port 8000
 EXPOSE 8000
 

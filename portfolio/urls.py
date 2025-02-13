@@ -1,6 +1,8 @@
 from django.urls import path, include
 from . import views
 from .views import ContactFormView, RecipeSearchView
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -13,7 +15,7 @@ urlpatterns = [
     path("a-propos", views.about, name="about"),
     path('contact', ContactFormView.as_view(), name='contact'),
     path('search/', RecipeSearchView.as_view(), name='recipe_search'),
-
-
-
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
