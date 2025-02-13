@@ -34,5 +34,6 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             ls -la
+            cd website
             docker-compose pull
             docker-compose up -d
