@@ -35,7 +35,7 @@ jobs:
           echo "---------------------------------------------"
           echo "Starting Docker Compose build..."
           echo "---------------------------------------------"
-          docker-compose -f /home/runner/work/meemzcookingblog/meemzcookingblog/docker-compose.yml build
+          docker-compose -f /home/runner/work/meemzcookingblog/meemzcookingblog/prod/docker-compose.yml build
           echo "---------------------------------------------"
           echo "Docker Compose build completed."
           echo "---------------------------------------------"
@@ -43,7 +43,7 @@ jobs:
           echo "---------------------------------------------"
           echo "Pushing images with Docker Compose..."
           echo "---------------------------------------------"
-          docker-compose -f /home/runner/work/meemzcookingblog/meemzcookingblog/docker-compose.yml.prod push
+          docker-compose -f /home/runner/work/meemzcookingblog/meemzcookingblog/prod/docker-compose.yml push
           echo "---------------------------------------------"
           echo "Docker Compose push completed."
           echo "---------------------------------------------"
