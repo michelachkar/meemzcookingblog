@@ -37,6 +37,8 @@ jobs:
           ls -la
           cd ..
           ls -la
+          cd ..
+          ls -la
           echo "---------------------------------------------"
           docker-compose -f ./prod/docker-compose.yml build
           echo "---------------------------------------------"
