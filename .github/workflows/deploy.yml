@@ -1,119 +1,93 @@
-name: Deploy to AWS EC2 with ECR
+name: Deploy to Production
 
 on:
   push:
     branches:
-      - main  # Modify if using a different branch for deployment
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION_NAME }}
+          fetch-depth: 0  # Pour s'assurer que nous avons l'historique complet des commits (utile pour certaines actions)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          version: latest
+        continue-on-error: false
+        id: setup_buildx
 
-      - name: Authenticate to AWS ECR
-        id: login-ecr
-        run: |
-          echo "----------------------------"
-          echo "Authenticating to AWS ECR..."
-          echo "----------------------------"
-          aws ecr get-login-password --region ${{ secrets.AWS_REGION_NAME }} | \
-          docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
-          echo "----------------------------"
-          echo "Authenticated to AWS ECR successfully"
-          echo "----------------------------"
+      - name: Log in to AWS ECR
+        uses: aws-actions/amazon-ecr-login@v1
+        id: ecr_login
+        continue-on-error: false
 
-      - name: Build & Push Docker Image
-        env:
-          ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
-          IMAGE_TAG: latest
+      - name: Build Docker image
         run: |
-          echo "----------------------------"
-          echo "Building Docker image..."
-          echo "----------------------------"
-          docker build -t $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG .
-          echo "----------------------------"
-          echo "Docker image built successfully"
-          echo "----------------------------"
+          echo "---------------------------------------------"
+          echo "Starting Docker build..."
+          echo "---------------------------------------------"
+          docker build -f prod/Dockerfile.prod -t my-site-prod .
+          echo "---------------------------------------------"
+          echo "Docker build completed."
+          echo "---------------------------------------------"
           
-          echo "----------------------------"
-          echo "Pushing Docker image to ECR..."
-          echo "----------------------------"
-          docker push $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG
-          echo "----------------------------"
-          echo "Docker image pushed successfully"
-          echo "----------------------------"
+          echo "---------------------------------------------"
+          echo "Tagging the image..."
+          echo "---------------------------------------------"
+          docker tag my-site-prod:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/my-site-prod:latest
+          echo "---------------------------------------------"
+          echo "Image tagged."
+          echo "---------------------------------------------"
 
-      - name: Deploy to EC2
-        env:
-          PRIVATE_KEY: ${{ secrets.EC2_KEY }}
-          GITHUB_SSH_PRIVATE_KEY: ${{ secrets.GIT_PRIVATE_KEY }}
+          echo "---------------------------------------------"
+          echo "Pushing image to AWS ECR..."
+          echo "---------------------------------------------"
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/my-site-prod:latest
+          echo "---------------------------------------------"
+          echo "Image pushed to ECR."
+          echo "---------------------------------------------"
+
+      - name: Set up Docker Compose
         run: |
-          echo "----------------------------"
-          echo "Setting up SSH keys for EC2"
-          echo "----------------------------"
-          # Create SSH key file for EC2
-          mkdir -p ~/.ssh
-          echo "$PRIVATE_KEY" | tr -d '\r' > ~/.ssh/aws_key.pem
-          chmod 600 ~/.ssh/aws_key.pem
-          echo "----------------------------"
-          echo "EC2 SSH key setup complete"
-          echo "----------------------------"
+          echo "---------------------------------------------"
+          echo "Starting Docker Compose build..."
+          echo "---------------------------------------------"
+          docker-compose -f prod/docker-compose.yml.prod build
+          echo "---------------------------------------------"
+          echo "Docker Compose build completed."
+          echo "---------------------------------------------"
 
-          # Set up known hosts to avoid SSH fingerprint issues
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          echo "----------------------------"
-          echo "GitHub host key added to known hosts"
-          echo "----------------------------"
+          echo "---------------------------------------------"
+          echo "Pushing images with Docker Compose..."
+          echo "---------------------------------------------"
+          docker-compose -f prod/docker-compose.yml.prod push
+          echo "---------------------------------------------"
+          echo "Docker Compose push completed."
+          echo "---------------------------------------------"
 
-          # Connect to EC2 and deploy
-          echo "----------------------------"
-          echo "Starting deployment to EC2..."
-          echo "----------------------------"
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/aws_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            echo "----------------------------"
-            echo "Logging into ECR from EC2"
-            echo "----------------------------"
-            aws ecr get-login-password --region ${{ secrets.AWS_REGION_NAME }} | \
-            docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
-            ls -la
-            echo "JUMPJUMPJUMPJUMPJUMPJUMPJUMPJUMPJUMP"
-            echo "----------------------------"
-            echo "ECR login successful"
-            echo "----------------------------"
+      - name: SSH into EC2 and run docker-compose
+        run: |
+          echo "---------------------------------------------"
+          echo "SSHing into EC2 instance..."
+          echo "---------------------------------------------"
+          ssh -i ${{ secrets.EC2_PRIVATE_KEY }} ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+            
+            echo "---------------------------------------------"
+            echo "Changing to project directory..."
+            echo "---------------------------------------------"
+            cd /path/to/your/project
 
-            echo "----------------------------"
-            echo "Pulling Docker image from ECR"
-            echo "----------------------------"
-            docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
-            echo "----------------------------"
-            echo "Docker image pulled successfully"
-            echo "----------------------------"
-            ls -la
-            echo "JUMPJUMPJUMPJUMPJUMPJUMPJUMPJUMPJUMP"
+            echo "---------------------------------------------"
+            echo "Running docker-compose up..."
+            echo "---------------------------------------------"
+            docker-compose -f prod/docker-compose.yml.prod up -d
 
-            echo "----------------------------"
-            echo "Stopping and removing existing containers"
-            echo "----------------------------"
-            docker-compose -f docker-compose.yml down
-
-            echo "----------------------------"
-            echo "Starting the new containers"
-            echo "----------------------------"
-            docker-compose -f docker-compose.yml up -d
-            echo "----------------------------"
-            echo "Deployment completed successfully"
-            echo "----------------------------"
+            echo "---------------------------------------------"
+            echo "Docker Compose containers are now up."
+            echo "---------------------------------------------"
           EOF
-          echo "----------------------------"
-          echo "Deployment to EC2 completed"
-          echo "----------------------------"

@@ -39,5 +39,5 @@ EXPOSE 8000
 # Run the entrypoint script
 ENTRYPOINT ["/bin/sh", "/app/entrypoint.sh"]
 
-# Default command to start Django with Gunicorn
+# Default command to start Django with Gunicorn (for production)
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "my_site.wsgi:application"]
