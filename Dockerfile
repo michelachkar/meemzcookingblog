@@ -2,7 +2,7 @@
 FROM python:3.11
 
 # Set working directory inside the container
-WORKDIR /app
+WORKDIR /my_site
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -23,25 +23,22 @@ RUN python -m pip install --upgrade pip
 
 # Copy requirements first to cache dependencies
 COPY requirements.txt .
-# Log files after copying
-RUN ls -l /app
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the entire project
 COPY . .
-# Log files after copying the entire project
-RUN ls -l /app
+
 
 # Make sure entrypoint.sh has executable permissions
-RUN chmod +x /app/entrypoint.sh
+RUN chmod +x entrypoint.sh
 
 # Expose port 8000
 EXPOSE 8000
 
 # Run the entrypoint script
-ENTRYPOINT ["/bin/sh", "/app/entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "entrypoint.sh"]
 
 # Default command to start Django with Gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "my_site.wsgi:application"]
