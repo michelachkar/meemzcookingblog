@@ -38,7 +38,7 @@ jobs:
           cd ..
           ls -la
           echo "---------------------------------------------"
-          docker-compose -f /home/prod/docker-compose.yml build
+          docker-compose -f ./prod/docker-compose.yml build
           echo "---------------------------------------------"
           echo "Docker Compose build completed."
           echo "---------------------------------------------"
@@ -46,7 +46,7 @@ jobs:
           echo "---------------------------------------------"
           echo "Pushing images with Docker Compose..."
           echo "---------------------------------------------"
-          docker-compose -f prod/docker-compose.yml.prod push
+          docker-compose -f ./prod/docker-compose.yml.prod push
           echo "---------------------------------------------"
           echo "Docker Compose push completed."
           echo "---------------------------------------------"
