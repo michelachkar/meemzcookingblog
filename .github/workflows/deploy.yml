@@ -10,49 +10,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0  # Pour s'assurer que nous avons l'historique complet des commits (utile pour certaines actions)
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-        with:
-          version: latest
-        continue-on-error: false
-        id: setup_buildx
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Log in to AWS ECR
-        uses: aws-actions/amazon-ecr-login@v1
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          region: ${{ secrets.AWS_REGION_NAME }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION_NAME }}
 
-
-      - name: Build Docker image
+      - name: Login to AWS ECR
         run: |
-          echo "---------------------------------------------"
-          echo "Starting Docker build..."
-          echo "---------------------------------------------"
-          docker build -f prod/Dockerfile.prod -t my-site-prod .
-          echo "---------------------------------------------"
-          echo "Docker build completed."
-          echo "---------------------------------------------"
-          
-          echo "---------------------------------------------"
-          echo "Tagging the image..."
-          docker tag my-site-prod:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/my-site-prod:latest
-          echo "---------------------------------------------"
-          echo "Image tagged."
-          echo "---------------------------------------------"
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION_NAME }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
 
-          echo "---------------------------------------------"
-          echo "Pushing image to AWS ECR..."
-          echo "---------------------------------------------"
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/my-site-prod:latest
-          echo "---------------------------------------------"
-          echo "Image pushed to ECR."
-          echo "---------------------------------------------"
-
-      - name: Set up Docker Compose
+      - name: Build and Push Docker Image to ECR
         run: |
           echo "---------------------------------------------"
           echo "Starting Docker Compose build..."
