@@ -24,12 +24,6 @@ jobs:
         run: |
           aws ecr get-login-password --region ${{ secrets.AWS_REGION_NAME }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
 
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | jq -r .tag_name)/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose --version
-
       - name: Build and Push Docker Image
         run: |
           docker build -t django-app-meemz-website .
@@ -42,21 +36,6 @@ jobs:
           echo "SSHing into EC2 instance..."
           echo "---------------------------------------------"
           ssh -i ${{ secrets.EC2_PRIVATE_KEY }} ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-            echo "---------------------------------------------"
-            echo "Logging into AWS ECR..."
-            echo "---------------------------------------------"
-            aws ecr get-login-password --region ${{ secrets.AWS_REGION_NAME }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
-
-            echo "---------------------------------------------"
-            echo "Pulling Docker image from ECR..."
-            echo "---------------------------------------------"
-            docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/my-repo:latest
-
-            echo "---------------------------------------------"
-            echo "Running Docker container..."
-            echo "---------------------------------------------"
-            docker run -d -p 80:80 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/my-repo:latest
-            echo "---------------------------------------------"
-            echo "Docker container is now running."
-            echo "---------------------------------------------"
+            docker-compose pull
+            docker-compose up -d
           EOF
