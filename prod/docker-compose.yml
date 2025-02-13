@@ -16,7 +16,7 @@ services:
 
   web:
     image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION_NAME}.amazonaws.com/${ECR_REPOSITORY}:latest
-    container_name: web_app
+    container_name: django_app
     restart: always
     env_file: .env
     depends_on:
