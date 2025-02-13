@@ -23,8 +23,9 @@ jobs:
 
       - name: Log in to AWS ECR
         uses: aws-actions/amazon-ecr-login@v1
-        id: ecr_login
-        continue-on-error: false
+        with:
+          region: ${{ secrets.AWS_REGION_NAME }}
+
 
       - name: Build Docker image
         run: |
@@ -38,7 +39,6 @@ jobs:
           
           echo "---------------------------------------------"
           echo "Tagging the image..."
-          echo "---------------------------------------------"
           docker tag my-site-prod:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/my-site-prod:latest
           echo "---------------------------------------------"
           echo "Image tagged."
@@ -76,7 +76,6 @@ jobs:
           echo "SSHing into EC2 instance..."
           echo "---------------------------------------------"
           ssh -i ${{ secrets.EC2_PRIVATE_KEY }} ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-            
             echo "---------------------------------------------"
             echo "Changing to project directory..."
             echo "---------------------------------------------"
@@ -86,7 +85,6 @@ jobs:
             echo "Running docker-compose up..."
             echo "---------------------------------------------"
             docker-compose -f prod/docker-compose.yml.prod up -d
-
             echo "---------------------------------------------"
             echo "Docker Compose containers are now up."
             echo "---------------------------------------------"
