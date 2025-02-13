@@ -35,7 +35,7 @@ jobs:
           echo "---------------------------------------------"
           echo "Starting Docker Compose build..."
           ls -la
-          cd..
+          cd ..
           ls -la
           echo "---------------------------------------------"
           docker-compose -f /home/prod/docker-compose.yml build
