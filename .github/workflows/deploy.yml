@@ -36,6 +36,7 @@ jobs:
           echo "Starting Docker Compose build..."
           echo "---------------------------------------------"
           docker-compose -f /home/runner/work/meemzcookingblog/meemzcookingblog/docker-compose.yml build
+          docker tag django_app:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
           echo "---------------------------------------------"
           echo "Docker Compose build completed."
           echo "---------------------------------------------"
@@ -48,22 +49,27 @@ jobs:
           echo "Docker Compose push completed."
           echo "---------------------------------------------"
 
-      - name: SSH into EC2 and run docker-compose
+      - name: SSH into EC2 and run Docker container
         run: |
           echo "---------------------------------------------"
           echo "SSHing into EC2 instance..."
           echo "---------------------------------------------"
           ssh -i ${{ secrets.EC2_PRIVATE_KEY }} ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
             echo "---------------------------------------------"
-            echo "Changing to project directory..."
+            echo "Logging into AWS ECR..."
             echo "---------------------------------------------"
-            cd /home/michel/
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION_NAME }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
 
             echo "---------------------------------------------"
-            echo "Running docker-compose up..."
+            echo "Pulling Docker image from ECR..."
             echo "---------------------------------------------"
-            docker-compose -f prod/docker-compose.yml.prod up -d
+            docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/my-repo:latest
+
             echo "---------------------------------------------"
-            echo "Docker Compose containers are now up."
+            echo "Running Docker container..."
+            echo "---------------------------------------------"
+            docker run -d -p 80:80 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/my-repo:latest
+            echo "---------------------------------------------"
+            echo "Docker container is now running."
             echo "---------------------------------------------"
           EOF
