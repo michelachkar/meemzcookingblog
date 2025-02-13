@@ -34,6 +34,11 @@ jobs:
         run: |
           echo "---------------------------------------------"
           echo "Starting Docker Compose build..."
+          ls -R /home/
+          ls -R /home/runner/
+          ls -R /home/runner/work/
+          ls -R /home/runner/work/meemzcookingblog/
+          ls -R /home/runner/work/meemzcookingblog/meemzcookingblog/
           echo "---------------------------------------------"
           docker-compose -f ./prod/docker-compose.yml build
           echo "---------------------------------------------"
