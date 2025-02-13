@@ -30,24 +30,11 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version
 
-      - name: Build and Push Docker Image to ECR
+      - name: Build and Push Docker Image
         run: |
-          echo "---------------------------------------------"
-          echo "Starting Docker Compose build..."
-          echo "---------------------------------------------"
-          docker-compose -f /home/runner/work/meemzcookingblog/meemzcookingblog/docker-compose.yml build
-          docker tag django_app:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
-          echo "---------------------------------------------"
-          echo "Docker Compose build completed."
-          echo "---------------------------------------------"
-
-          echo "---------------------------------------------"
-          echo "Pushing images with Docker Compose..."
-          echo "---------------------------------------------"
-          docker-compose -f /home/runner/work/meemzcookingblog/meemzcookingblog/docker-compose.yml push
-          echo "---------------------------------------------"
-          echo "Docker Compose push completed."
-          echo "---------------------------------------------"
+          docker build -t django-app-meemz-website .
+          docker tag django-app-meemz-website:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
 
       - name: SSH into EC2 and run Docker container
         run: |
