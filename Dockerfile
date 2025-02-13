@@ -23,12 +23,16 @@ RUN python -m pip install --upgrade pip
 
 # Copy requirements first to cache dependencies
 COPY requirements.txt .
+# Log files after copying
+RUN ls -l /app
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the entire project
 COPY . .
+# Log files after copying the entire project
+RUN ls -l /app
 
 # Make sure entrypoint.sh has executable permissions
 RUN chmod +x /app/entrypoint.sh
