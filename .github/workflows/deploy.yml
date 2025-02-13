@@ -34,13 +34,8 @@ jobs:
         run: |
           echo "---------------------------------------------"
           echo "Starting Docker Compose build..."
-          ls -la /home/
-          ls -la /home/runner/
-          ls -la /home/runner/work/
-          ls -la /home/runner/work/meemzcookingblog/
-          ls -la /home/runner/work/meemzcookingblog/meemzcookingblog/
           echo "---------------------------------------------"
-          docker-compose -f ./prod/docker-compose.yml build
+          docker-compose -f /home/runner/work/meemzcookingblog/meemzcookingblog/docker-compose.yml build
           echo "---------------------------------------------"
           echo "Docker Compose build completed."
           echo "---------------------------------------------"
@@ -48,7 +43,7 @@ jobs:
           echo "---------------------------------------------"
           echo "Pushing images with Docker Compose..."
           echo "---------------------------------------------"
-          docker-compose -f ./prod/docker-compose.yml.prod push
+          docker-compose -f /home/runner/work/meemzcookingblog/meemzcookingblog/docker-compose.yml.prod push
           echo "---------------------------------------------"
           echo "Docker Compose push completed."
           echo "---------------------------------------------"
@@ -62,7 +57,7 @@ jobs:
             echo "---------------------------------------------"
             echo "Changing to project directory..."
             echo "---------------------------------------------"
-            cd /path/to/your/project
+            cd /home/michel/
 
             echo "---------------------------------------------"
             echo "Running docker-compose up..."
