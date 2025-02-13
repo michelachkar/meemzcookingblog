@@ -30,7 +30,7 @@ jobs:
           echo "Starting Docker Compose build..."
           ls -la
           echo "---------------------------------------------"
-          docker-compose -f prod/docker-compose.yml.prod build
+          docker-compose -f prod/docker-compose.yml build
           echo "---------------------------------------------"
           echo "Docker Compose build completed."
           echo "---------------------------------------------"
