@@ -13,49 +13,61 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   web:
-    build: .
+    image: ${ECR_IMAGE:-django-app-local}
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: web_app
     restart: always
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     env_file: .env
     environment:
       DB_HOST: db
       DB_PORT: 3306
+      DJANGO_SETTINGS_MODULE: my_site.settings
     ports:
       - "8000:8000"
     volumes:
-      - .:/app
-      - ./staticfiles:/my_site/staticfiles
-
-  web:
-    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION_NAME}.amazonaws.com/${ECR_REPOSITORY}:latest
-    container_name: web_app
-    restart: always
-    env_file: .env
-    depends_on:
-      - db
-    environment:
-      DB_HOST: db
-      DB_PORT: 3306
-    ports:
-      - "8000:8000"
-    volumes:
-      - .:/app
-      - ./staticfiles:/my_site/staticfiles
+      - .:/my_site:cached
+      - static_volume:/my_site/staticfiles
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    profiles:
+      - dev
+      - prod
 
   nginx:
     image: nginx:latest
     container_name: nginx
     restart: always
     depends_on:
-      - web
+      web:
+        condition: service_healthy
     ports:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - static_volume:/my_site/staticfiles
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    profiles:
+      - prod
 
 volumes:
   mysql_data:

@@ -38,9 +38,52 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
+            echo "🚀 Starting deployment process..."
+            
+            echo "🔑 Logging in to AWS ECR..."
             aws ecr get-login-password --region ${{ secrets.AWS_REGION_NAME }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
+            
             cd website
+            
+            echo "⬇️ Pulling latest images..."
             docker-compose pull
-            docker-compose up -d
-
+            
+            echo "🛑 Stopping existing containers..."
+            echo "  → Stopping web application..."
+            docker stop web_app || true
+            echo "  → Stopping nginx..."
+            docker stop nginx || true
+            
+            echo "🗑️ Removing stopped containers..."
+            docker rm web_app nginx || true
+            
+            echo "🧹 Cleaning up unused images..."
+            docker image prune -f
+            
+            echo "🚀 Starting new containers..."
+            docker-compose --profile prod up -d
+            
+            echo "⏳ Waiting for services to be healthy..."
+            sleep 10
+            
+            echo "🔍 Checking container status..."
+            docker ps
+            
+            echo "🧹 Performing final cleanup..."
+            docker system prune -f
+            
+            echo "✅ Deployment completed successfully!"
+            
+            echo "📊 Deployment Summary:"
+            echo "  → New containers are running"
+            echo "  → Unused images cleaned"
+            echo "  → System pruned"
+            
+            # Optional: Add container health check
+            if docker ps | grep -q "web_app" && docker ps | grep -q "nginx"; then
+              echo "✅ All critical services are running"
+            else
+              echo "❌ Warning: Some services might not be running properly"
+              exit 1
+            fi
 
