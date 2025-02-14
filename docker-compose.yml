@@ -16,7 +16,7 @@ services:
 
   web:
     build: .
-    container_name: django_app
+    container_name: web_app
     restart: always
     depends_on:
       - db
@@ -27,8 +27,35 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .:/my_site
-      - ./staticfiles:/app/staticfiles
+      - .:/app
+      - ./staticfiles:/my_site/staticfiles
+
+  web:
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION_NAME}.amazonaws.com/${ECR_REPOSITORY}:latest
+    container_name: web_app
+    restart: always
+    env_file: .env
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - ./staticfiles:/my_site/staticfiles
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    depends_on:
+      - web
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
 
 volumes:
   mysql_data:
