@@ -38,52 +38,82 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            echo "🚀 Starting deployment process..."
+            echo "----------------------------------------"
+            echo "Starting deployment process..."
+            echo "----------------------------------------"
             
-            echo "🔑 Logging in to AWS ECR..."
+            echo "-----------------------------"
+            echo "Logging in to AWS ECR..."
+            echo "-----------------------------"
             aws ecr get-login-password --region ${{ secrets.AWS_REGION_NAME }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION_NAME }}.amazonaws.com
             
             cd website
             
-            echo "⬇️ Pulling latest images..."
+            echo "-----------------------------"
+            echo "Pulling latest images..."
+            echo "-----------------------------"
             docker-compose pull
             
-            echo "🛑 Stopping existing containers..."
-            echo "  → Stopping web application..."
+            echo "-----------------------------"
+            echo "Stopping existing containers..."
+            echo "-----------------------------"
+
+            echo "-----------------------------"
+            echo "Stopping web application..."
+            echo "-----------------------------"
             docker stop web_app || true
-            echo "  → Stopping nginx..."
+
+            echo "-----------------------------"
+            echo "Stopping nginx..."
+            echo "-----------------------------"
             docker stop nginx || true
             
-            echo "🗑️ Removing stopped containers..."
+            echo "-----------------------------"
+            echo "Removing stopped containers..."
+            echo "-----------------------------"
             docker rm web_app nginx || true
             
-            echo "🧹 Cleaning up unused images..."
+            echo "-----------------------------"
+            echo "Cleaning up unused images..."
+            echo "-----------------------------"
             docker image prune -f
             
-            echo "🚀 Starting new containers..."
+            echo "-----------------------------"
+            echo "Starting new containers..."
+            echo "-----------------------------"
             docker-compose --profile prod up -d
             
-            echo "⏳ Waiting for services to be healthy..."
+            echo "-----------------------------"
+            echo "Waiting for services to be healthy..."
+            echo "-----------------------------"
             sleep 10
             
-            echo "🔍 Checking container status..."
+            echo "-----------------------------"
+            echo "Checking container status..."
+            echo "-----------------------------"
             docker ps
             
-            echo "🧹 Performing final cleanup..."
+            echo "-----------------------------"
+            echo "Performing final cleanup..."
+            echo "-----------------------------"
             docker system prune -f
             
-            echo "✅ Deployment completed successfully!"
+            echo "----------------------------------------"
+            echo "Deployment completed successfully!"
+            echo "----------------------------------------"
             
-            echo "📊 Deployment Summary:"
-            echo "  → New containers are running"
-            echo "  → Unused images cleaned"
-            echo "  → System pruned"
+            echo "----------------------------------------"
+            echo "Deployment Summary:"
+            echo "- New containers are running"
+            echo "- Unused images cleaned"
+            echo "- System pruned"
+            echo "----------------------------------------"
             
             # Optional: Add container health check
             if docker ps | grep -q "web_app" && docker ps | grep -q "nginx"; then
-              echo "✅ All critical services are running"
+              echo "All critical services are running"
             else
-              echo "❌ Warning: Some services might not be running properly"
+              echo "Warning: Some services might not be running properly"
               exit 1
             fi
 
